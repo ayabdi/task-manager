@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { withAuth } from "../../../middleware/withAuth";
+import { withAuth } from "../../middleware/withAuth";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();

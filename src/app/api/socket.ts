@@ -2,7 +2,7 @@
 
 import { Server } from "socket.io";
 import type { NextApiRequest } from "next";
-import { NextApiResponseServerIO } from "../../types/next";
+import { NextApiResponseServerIO } from "../types/next";
 
 export default function handler(
   req: NextApiRequest,
