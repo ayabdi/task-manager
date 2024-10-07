@@ -1,19 +1,15 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import Header from "@/components/kanban/Header";
+import TaskBoard from "@/components/kanban/TaskBoard";
 
 export default function TasksPage() {
-
-  const [tasks, setTasks] = useState([]);
-
-  useEffect(() => {
-    const fetchTasks = async () => {
-      const response = await fetch("/api/tasks");
-      const data = await response.json();
-      setTasks(data);
-    };
-
-    fetchTasks();
-  }, []);
-  return <div>Hello</div>;
+  return (
+    <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 q-full font-Inter">
+      <div className="w-[1240px] mx-auto">
+        <Header />
+        <TaskBoard />
+      </div>
+    </div>
+  );
 }

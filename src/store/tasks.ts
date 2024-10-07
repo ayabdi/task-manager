@@ -1,57 +1,77 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-export interface Task {
-  id: number;
-  title: string;
 
-  // other fields
+export type TaskStatus = "BACKLOG" | "TODO" | "IN PROGRESS" | "DONE";
+export interface Task {
+  id: string;
+  title: string;
+  description?: string;
+  status: TaskStatus
 }
 
 interface TasksState {
-  items: Task[];
-  status: "idle" | "loading" | "failed";
+  selectedTask?: Task
+  tasks: Task[];
 }
-
-const initialState: TasksState = {
-  items: [],
-  status: "idle",
-};
-
 export const fetchTasks = createAsyncThunk("tasks/fetchTasks", async () => {
   const response = await axios.get("/api/tasks");
 
   return response.data;
 });
 
+const initialState: TasksState = {
+  selectedTask: undefined,
+  tasks: [
+    // Example initial tasks
+    { id: "1", title: "Task 1", status: "TODO" },
+    { id: "2", title: "Task 2", status: "IN PROGRESS" },
+    { id: "3", title: "Task 3", status: "DONE" },
+  ],
+};
+
 const tasksSlice = createSlice({
   name: "tasks",
   initialState,
   reducers: {
-    updateTask(state, action: PayloadAction<Task>) {
-      const index = state.items.findIndex(
-        (task) => task.id === action.payload.id
-      );
+    addTask(state, action: PayloadAction<Omit<Task, "id">>) {
+      const newTask: Task = {
+        id: Date.now().toString(),
 
-      if (index !== -1) {
-        state.items[index] = action.payload;
+        ...action.payload,
+      };
+      state.tasks.push(newTask);
+    },
+
+    updateTaskStatus(
+      state,
+      action: PayloadAction<{ id: string; status: Task["status"] }>
+    ) {
+      const task = state.tasks.find((t) => t.id === action.payload.id);
+
+      if (task) {
+        task.status = action.payload.status;
       }
     },
-  },
 
-  extraReducers: (builder) => {
-    builder.addCase(
-      fetchTasks.fulfilled,
-      (state, action: PayloadAction<Task[]>) => {
-        state.items = action.payload;
+    selectTask(state, action: PayloadAction<Task | undefined>) {
+      state.selectedTask = action.payload;
+    }
 
-        state.status = "idle";
-      }
-    );
+    // extraReducers: (builder) => {
+    //   builder.addCase(
+    //     fetchTasks.fulfilled,
+    //     (state, action: PayloadAction<Task[]>) => {
+    //       state.items = action.payload;
 
-    // Handle other cases
+    //       state.status = "idle";
+    //     }
+    //   );
+
+    //   // Handle other cases
+    // },
   },
 });
 
-export const { updateTask } = tasksSlice.actions;
+export const { addTask, updateTaskStatus } = tasksSlice.actions;
 export default tasksSlice.reducer;

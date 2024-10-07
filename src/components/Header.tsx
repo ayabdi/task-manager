@@ -2,7 +2,7 @@ import { useTranslation } from "next-i18next";
 
 import Link from "next/link";
 import React from 'react'
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 const Header = () => {
   const { t } = useTranslation("common");
@@ -10,7 +10,7 @@ const Header = () => {
   const router = useRouter();
 
   const switchLanguage = (locale: string) => {
-    router.push(router.pathname, router.asPath, { locale });
+   // router.push(router.pathname, router.asPath, { locale });
   };
 
   return (
