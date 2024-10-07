@@ -1,19 +1,29 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-
 export type TaskStatus = "BACKLOG" | "TODO" | "IN PROGRESS" | "DONE";
 export interface Task {
   id: string;
   title: string;
   description?: string;
-  status: TaskStatus
+  status: TaskStatus;
+}
+
+interface EditorState {
+  isOpen: boolean;
+  status?: TaskStatus;
+  selectedTask?: Task | null;
+  deleteModalOpen: boolean;
+  title: string; // New state for task title
+  description: string; // New state for task description
 }
 
 interface TasksState {
-  selectedTask?: Task
+  selectedTask?: Task;
   tasks: Task[];
+  editorState: EditorState; // Added editor state to the main state
 }
+
 export const fetchTasks = createAsyncThunk("tasks/fetchTasks", async () => {
   const response = await axios.get("/api/tasks");
 
@@ -28,6 +38,13 @@ const initialState: TasksState = {
     { id: "2", title: "Task 2", status: "IN PROGRESS" },
     { id: "3", title: "Task 3", status: "DONE" },
   ],
+  editorState: {
+    isOpen: false,
+    selectedTask: null,
+    deleteModalOpen: false,
+    title: "",
+    description: "",
+  },
 };
 
 const tasksSlice = createSlice({
@@ -43,6 +60,17 @@ const tasksSlice = createSlice({
       state.tasks.push(newTask);
     },
 
+    updateTask(state, action: PayloadAction<{ id: string; body: Partial<Task> }>) {
+      const task = state.tasks.find((t) => t.id === action.payload.id);
+      if (task) {
+        Object.assign(task, action.payload.body);
+      }
+    },
+
+    deleteTask(state, action: PayloadAction<string>) {
+      state.tasks = state.tasks.filter((task) => task.id !== action.payload);
+    },
+
     updateTaskStatus(
       state,
       action: PayloadAction<{ id: string; status: Task["status"] }>
@@ -56,7 +84,22 @@ const tasksSlice = createSlice({
 
     selectTask(state, action: PayloadAction<Task | undefined>) {
       state.selectedTask = action.payload;
-    }
+    },
+
+    // New reducers for editor state management
+    setEditorState(state, action: PayloadAction<Partial<EditorState>>) {
+      state.editorState = { ...state.editorState, ...action.payload };
+    },
+
+    resetEditorState(state) {
+      state.editorState = {
+        isOpen: false,
+        selectedTask: null,
+        deleteModalOpen: false,
+        title: "",
+        description: "",
+      };
+    },
 
     // extraReducers: (builder) => {
     //   builder.addCase(
@@ -73,5 +116,14 @@ const tasksSlice = createSlice({
   },
 });
 
-export const { addTask, updateTaskStatus } = tasksSlice.actions;
+// Exporting actions
+export const {
+  addTask,
+  updateTaskStatus,
+  updateTask,
+  deleteTask,
+  selectTask,
+  setEditorState,
+  resetEditorState,
+} = tasksSlice.actions;
 export default tasksSlice.reducer;

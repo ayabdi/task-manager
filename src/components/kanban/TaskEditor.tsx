@@ -1,10 +1,12 @@
-import Drawer from '../../../common/Drawer'
-import Input from '../../../common/Input'
-import ListBox from '../../../common/ListBox'
-import Button from '../../../common/Button'
-import { useTaskEditor } from '../hooks/useTaskEditor'
-import trashicon from '../../../assets/Trash.svg'
-import Modal from '../../../common/Modal'
+
+import { useTaskEditor } from '@/hooks/useTaskEditor'
+// import trashicon from '../../../assets/Trash.svg'
+import Button from '../Button'
+import Drawer from '../Drawer'
+import ListBox from '../ListBox'
+import Modal from '../Modal'
+import Input from '../Input'
+
 
 const TaskEditor = () => {
   const {
@@ -24,7 +26,7 @@ const TaskEditor = () => {
     <Drawer isOpen={isOpen} close={close} title={selectedTask ? 'Edit Task' : 'Create Task'}>
       {selectedTask && (
         <img
-          src={trashicon}
+          // src={trashicon}
           className="absolute h-5 w-5 right-6 -top-12 cursor-pointer"
           onClick={() => setDeleteModalOpen(true)}
         />
@@ -33,7 +35,7 @@ const TaskEditor = () => {
         <Input
           name="name"
           type="text"
-          value={formData.name}
+          value={formData.title}
           onChange={e => handleChange({ name: e.target.name, value: e.target.value })}
           required
           label="Task Name"
@@ -50,7 +52,7 @@ const TaskEditor = () => {
         <ListBox
           label="Status"
           options={['COMPLETE', 'IN_PROGRESS', 'BACKLOG', 'TODO']}
-          selected={formData.status}
+          selected={formData.status!}
           setSelected={s => handleChange({ name: 'status', value: s })}
         />
         <div className="mt-auto flex gap-2">
