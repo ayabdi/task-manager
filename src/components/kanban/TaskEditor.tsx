@@ -33,12 +33,12 @@ const TaskEditor = () => {
       )}
       <form className="flex flex-col gap-3 h-full" onSubmit={onSubmit}>
         <Input
-          name="name"
+          name="title"
           type="text"
           value={formData.title}
           onChange={e => handleChange({ name: e.target.name, value: e.target.value })}
           required
-          label="Task Name"
+          label="Task Title"
         />
 
         <Input

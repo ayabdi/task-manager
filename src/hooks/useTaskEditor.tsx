@@ -1,44 +1,57 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store";
-import { deleteTask, resetEditorState, setEditorState, Task, updateTask } from "@/store/tasks";
+import {
+  addTask,
+  deleteTask,
+  resetEditorState,
+  setEditorState,
+  Task,
+  updateTask,
+} from "@/store/tasks";
 
 export const useTaskEditor = () => {
   // Global Task Editor States
   const { editorState } = useSelector((state: RootState) => state.tasks);
   const dispatch = useDispatch<AppDispatch>();
 
-  const [formData, setFormData] = useState<Partial<Task>>({
-    title: editorState.title,
-    description: editorState.description,
+  const [formData, setFormData] = useState<Omit<Task, "id">>({
+    title: "",
+    description: "",
+    status: "BACKLOG",
   });
 
   // Form Functions
   const handleChange = (e: { name: string; value: string }) => {
     const { name, value } = e;
-    setFormData({ [name]: value });
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
   const close = () => {
-     dispatch(resetEditorState());
+    dispatch(resetEditorState());
     // resetFormData();
   };
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const onSuccess = () => close();
 
-    if (!!editorState.selectedTask) {
-      dispatch(updateTask({ id: editorState.selectedTask.id, body: formData }));
-    } else {
-      // createTask(formData, { onSuccess });
-    }
+    try {
+      if (!!editorState.selectedTask && !!formData) {
+        dispatch(
+          updateTask({ id: editorState.selectedTask.id, body: formData })
+        );
+      } else {
+        dispatch(addTask(formData));
+      }
+
+      close();
+    } catch {}
   };
 
   const onDelete = () => {
     const taskId = editorState.selectedTask?.id;
     if (!taskId) return;
-    dispatch(deleteTask(taskId))
+    dispatch(deleteTask(taskId));
   };
 
   // Set Initial Form State
@@ -49,7 +62,7 @@ export const useTaskEditor = () => {
     if (editorState || status) {
       setFormData({
         title: selectedTask?.title || "",
-        status: selectedTask?.status || status,
+        status: selectedTask?.status || status!,
         description: selectedTask?.description || "",
       });
     }

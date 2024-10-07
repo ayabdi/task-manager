@@ -5,17 +5,18 @@ import {
   DragEndEvent,
   DragStartEvent,
 } from "@dnd-kit/core";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { AppDispatch, RootState } from "@/store";
-import { Task, TaskStatus, updateTaskStatus } from "@/store/tasks";
+import { Task, TaskStatus, updateTask } from "@/store/tasks";
 import { useDispatch, useSelector } from "react-redux";
 import { ColumnType } from "@/components/kanban/TaskBoard";
+import { useSocket } from "./useSocket";
 
 export const useTasks = () => {
   // Fetch tasks and get update mutation
   const tasks = useSelector((state: RootState) => state.tasks.tasks);
-
   const dispatch = useDispatch<AppDispatch>();
+  const socket = useSocket();
 
   // State for tracking active column and task during drag
   const [activeColumn, setActiveColumn] = useState<ColumnType | null>(null);
@@ -34,7 +35,7 @@ export const useTasks = () => {
     ...column,
     tasks: tasks?.filter((task) => task.status === column.name) || [],
   }));
-  
+
   // Memoize column IDs
   const columnsId = useMemo(
     () => (columns?.map((col) => col.name || "") as any) || [],
@@ -51,8 +52,10 @@ export const useTasks = () => {
   );
 
   // Function to update task status
-  const onUpdateTask = (id: string, status: TaskStatus) => {
-    dispatch(updateTaskStatus({ id: id, status }));
+  const onUpdateTask = (id: string, task: Task) => {
+    dispatch(updateTask({ id, body: task }));
+
+    socket?.emit("task_update", { room: "task_room", task });
   };
 
   // Handle drag start event
@@ -92,9 +95,22 @@ export const useTasks = () => {
     // Update task status
     if (newStatus) {
       const updatedTask = { ...tasks[activeIndex], status: newStatus }; // Create a new task object
-      onUpdateTask(updatedTask.id, newStatus); // Dispatch the update action
+      onUpdateTask(updatedTask.id, updatedTask); // Dispatch the update action
     }
   }
+
+  useEffect(() => {
+    if (!socket) return;
+    socket.emit("join_room", "task_room");
+    socket.on("receive_task_update", (data) => {
+      if (data.task) {
+        dispatch(updateTask({ id: data.task.id, body: data.task }));
+      }
+    });
+    return () => {
+      socket.off("receive_task_update");
+    };
+  }, [socket, dispatch]);
 
   return {
     activeColumn,

@@ -54,16 +54,25 @@ const tasksSlice = createSlice({
     addTask(state, action: PayloadAction<Omit<Task, "id">>) {
       const newTask: Task = {
         id: Date.now().toString(),
-
         ...action.payload,
       };
       state.tasks.push(newTask);
     },
 
-    updateTask(state, action: PayloadAction<{ id: string; body: Partial<Task> }>) {
-      const task = state.tasks.find((t) => t.id === action.payload.id);
-      if (task) {
-        Object.assign(task, action.payload.body);
+    updateTask(
+      state,
+      action: PayloadAction<{ id: string; body: Partial<Task> }>
+    ) {
+      const taskIndex = state.tasks.findIndex((t) => t.id === action.payload.id);
+      if (taskIndex !== -1) {
+        // Create a new task object with updated properties
+        const updatedTask = {
+          ...state.tasks[taskIndex],
+          ...action.payload.body,
+        };
+
+        // Replace the old task with the updated task
+        state.tasks[taskIndex] = updatedTask;
       }
     },
 
@@ -93,8 +102,8 @@ const tasksSlice = createSlice({
 
     resetEditorState(state) {
       state.editorState = {
+        ...state.editorState,
         isOpen: false,
-        selectedTask: null,
         deleteModalOpen: false,
         title: "",
         description: "",
