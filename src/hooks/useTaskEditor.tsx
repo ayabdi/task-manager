@@ -9,11 +9,14 @@ import {
   Task,
   updateTask,
 } from "@/store/tasks";
+import useSocketEvents from "./useSocketEvents";
 
 export const useTaskEditor = () => {
   // Global Task Editor States
   const { editorState } = useSelector((state: RootState) => state.tasks);
   const dispatch = useDispatch<AppDispatch>();
+
+  const { emitAddTask, emitTaskUpdate } = useSocketEvents(); // Call the socket event handler
 
   const [formData, setFormData] = useState<Omit<Task, "id">>({
     title: "",
@@ -32,16 +35,14 @@ export const useTaskEditor = () => {
     // resetFormData();
   };
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
       if (!!editorState.selectedTask && !!formData) {
-        dispatch(
-          updateTask({ id: editorState.selectedTask.id, body: formData })
-        );
+        emitTaskUpdate({ ...formData, id: editorState.selectedTask.id });
       } else {
-        dispatch(addTask(formData));
+        await emitAddTask(formData);
       }
 
       close();

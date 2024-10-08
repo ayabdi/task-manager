@@ -37,7 +37,6 @@ export async function POST(req: Request) {
   }
 
   const user = await createUser(body);
-
   return Response.json(user);
 }
 

@@ -26,9 +26,16 @@ interface TasksState {
 
 export const fetchTasks = createAsyncThunk("tasks/fetchTasks", async () => {
   const response = await axios.get("/api/tasks");
-
   return response.data;
 });
+
+export const addTaskAsync = createAsyncThunk(
+  "tasks/addTask",
+  async (task: Omit<Task, "id">) => {
+    const response = await axios.post("/api/tasks", task);
+    return response.data; // Assuming the API returns the created task
+  }
+);
 
 const initialState: TasksState = {
   selectedTask: undefined,
@@ -51,19 +58,16 @@ const tasksSlice = createSlice({
   name: "tasks",
   initialState,
   reducers: {
-    addTask(state, action: PayloadAction<Omit<Task, "id">>) {
-      const newTask: Task = {
-        id: Date.now().toString(),
-        ...action.payload,
-      };
-      state.tasks.push(newTask);
+    addTask(state, action: PayloadAction<Task>) {
+      state.tasks.push(action.payload);
     },
-
     updateTask(
       state,
       action: PayloadAction<{ id: string; body: Partial<Task> }>
     ) {
-      const taskIndex = state.tasks.findIndex((t) => t.id === action.payload.id);
+      const taskIndex = state.tasks.findIndex(
+        (t) => t.id === action.payload.id
+      );
       if (taskIndex !== -1) {
         // Create a new task object with updated properties
         const updatedTask = {
@@ -109,20 +113,18 @@ const tasksSlice = createSlice({
         description: "",
       };
     },
-
-    // extraReducers: (builder) => {
-    //   builder.addCase(
-    //     fetchTasks.fulfilled,
-    //     (state, action: PayloadAction<Task[]>) => {
-    //       state.items = action.payload;
-
-    //       state.status = "idle";
-    //     }
-    //   );
-
-    //   // Handle other cases
-    // },
   },
+  extraReducers: (builder) => {
+    builder.addCase(
+      fetchTasks.fulfilled,
+      (state, action: PayloadAction<Task[]>) => {
+        state.tasks = action.payload
+      }
+    ) .addCase(addTaskAsync.fulfilled, (state, action: PayloadAction<Task>) => {
+      state.tasks.push(action.payload);
+    })
+    // Handle other cases
+  }
 });
 
 // Exporting actions

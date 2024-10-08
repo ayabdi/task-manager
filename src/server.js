@@ -17,13 +17,19 @@ app.prepare().then(() => {
     console.log(`User connected: ${socket.id}`);
 
     socket.on("join_room", (room) => {
+      console.log('joined', room)
       socket.join(room);
     });
 
-    socket.on("task_update", (data) => {
-      socket.to(data.room).emit("receive_task_update", data);
+    socket.on("update_task", (data) => {
+      console.log("task", data)
+      socket.to(data.room).emit("receive_task_update", data); 
     });
 
+    socket.on("add_task", (data)=>{
+      console.log("task add", data)
+      socket.to(data.room).emit("receive_task_added", data)
+    })
     socket.on("disconnect", () => {
       console.log(`User disconnected: ${socket.id}`);
     });
