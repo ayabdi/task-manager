@@ -16,13 +16,16 @@ export const useTaskEditor = () => {
   const { editorState } = useSelector((state: RootState) => state.tasks);
   const dispatch = useDispatch<AppDispatch>();
 
-  const { emitAddTask, emitTaskUpdate } = useSocketEvents(); // Call the socket event handler
+  const { emitAddTask, emitTaskUpdate, emitDeleteTask } = useSocketEvents(); // Call the socket event handler
 
-  const [formData, setFormData] = useState<Omit<Task, "id">>({
+  const initialFormState: Omit<Task, "id"> = {
     title: "",
     description: "",
     status: "BACKLOG",
-  });
+  };
+  const [formData, setFormData] = useState<Omit<Task, "id">>(initialFormState);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   // Form Functions
   const handleChange = (e: { name: string; value: string }) => {
@@ -32,13 +35,14 @@ export const useTaskEditor = () => {
 
   const close = () => {
     dispatch(resetEditorState());
-    // resetFormData();
+    setFormData(initialFormState);
   };
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
+      setIsSubmitting(true);
       if (!!editorState.selectedTask && !!formData) {
         emitTaskUpdate({ ...formData, id: editorState.selectedTask.id });
       } else {
@@ -46,13 +50,24 @@ export const useTaskEditor = () => {
       }
 
       close();
-    } catch {}
+    } catch {
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
-  const onDelete = () => {
+  const onDelete = async () => {
     const taskId = editorState.selectedTask?.id;
     if (!taskId) return;
-    dispatch(deleteTask(taskId));
+
+    try {
+      setIsDeleting(true)
+      await emitDeleteTask(taskId);
+      close();
+    } catch (error) {
+    } finally {
+      setIsDeleting(false);
+    }
   };
 
   // Set Initial Form State
@@ -77,10 +92,10 @@ export const useTaskEditor = () => {
     close,
     onSubmit,
     onDelete,
-    loading: false,
-    isDeleting: false,
+    loading: isSubmitting,
+    isDeleting: isDeleting,
     setDeleteModalOpen: (bool: boolean) =>
-      setEditorState({ deleteModalOpen: bool }),
+      dispatch(setEditorState({ deleteModalOpen: bool })),
     deleteModalOpen: editorState.deleteModalOpen,
   };
 };

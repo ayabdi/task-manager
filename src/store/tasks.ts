@@ -37,14 +37,29 @@ export const addTaskAsync = createAsyncThunk(
   }
 );
 
+export const updateTaskAsync = createAsyncThunk(
+  "tasks/updateTask",
+  async ({ id, body }: { id: string; body: Partial<Task> }) => {
+    const response = await axios.put(`/api/tasks/${id}`, body, {
+      headers: {
+          'Content-Type': 'application/json', // Ensure the content type is set
+      },
+  })
+    return response.data; // Assuming the API returns the updated task
+  }
+);
+
+export const deleteTaskAsync = createAsyncThunk(
+  "tasks/deleteTask",
+  async (id: string) => {
+    await axios.delete(`/api/tasks/${id}`);
+    return id; // Return the id of the deleted task
+  }
+);
+
 const initialState: TasksState = {
   selectedTask: undefined,
-  tasks: [
-    // Example initial tasks
-    { id: "1", title: "Task 1", status: "TODO" },
-    { id: "2", title: "Task 2", status: "IN PROGRESS" },
-    { id: "3", title: "Task 3", status: "DONE" },
-  ],
+  tasks: [],
   editorState: {
     isOpen: false,
     selectedTask: null,
@@ -115,16 +130,33 @@ const tasksSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(
-      fetchTasks.fulfilled,
-      (state, action: PayloadAction<Task[]>) => {
-        state.tasks = action.payload
-      }
-    ) .addCase(addTaskAsync.fulfilled, (state, action: PayloadAction<Task>) => {
-      state.tasks.push(action.payload);
-    })
-    // Handle other cases
-  }
+    builder
+      .addCase(fetchTasks.fulfilled, (state, action: PayloadAction<Task[]>) => {
+        state.tasks = action.payload;
+      })
+      .addCase(addTaskAsync.fulfilled, (state, action: PayloadAction<Task>) => {
+        state.tasks.push(action.payload);
+      })
+      .addCase(
+        updateTaskAsync.fulfilled,
+        (state, action: PayloadAction<Task>) => {
+          const taskIndex = state.tasks.findIndex(
+            (t) => t.id === action.payload.id
+          );
+          if (taskIndex !== -1) {
+            state.tasks[taskIndex] = action.payload; // Update the task in the state
+          }
+        }
+      )
+      .addCase(
+        deleteTaskAsync.fulfilled,
+        (state, action: PayloadAction<string>) => {
+          state.tasks = state.tasks.filter(
+            (task) => task.id !== action.payload
+          ); // Remove the deleted task
+        }
+      );
+  },
 });
 
 // Exporting actions

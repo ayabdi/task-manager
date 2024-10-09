@@ -37,35 +37,3 @@ export async function POST(req: Request) {
     return Response.json(error);
   }
 }
-
-export async function PUT(req: Request) {
-  const session = await getServerSession(authOptions);
-  const { id, updates } = await req.json();
-
-  if (!id) {
-    return Response.json({ error: "Task Id is required" }, { status: 400 });
-  }
-
-  try {
-    const updatedTask = await updateTask(id, session!.userId, updates);
-    return Response.json(updatedTask);
-  } catch (error) {
-    return Response.json(error);
-  }
-}
-
-export async function DELETE(req: Request) {
-  const session = await getServerSession(authOptions);
-  const { id } = await req.json();
-
-  if (!id) {
-    return Response.json({ error: "Task Id is required" }, { status: 400 });
-  }
-
-  try {
-    await deleteTask(id, session!.userId);
-    return Response.json({ message: "Task deleted successfully" });
-  } catch (error) {
-    return Response.json(error);
-  }
-}

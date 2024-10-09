@@ -1,5 +1,5 @@
 import { AppDispatch, RootState } from "@/store";
-import { addTask, updateTask } from "@/store/tasks";
+import { addTask, deleteTask, updateTask } from "@/store/tasks";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { io, Socket } from "socket.io-client";
@@ -62,14 +62,23 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({
       }
     };
 
+    // Handle task delete event
+    const handleTaskDelete = (data: any) => {
+      if (data.taskId) {
+        dispatch(deleteTask(data.taskId));
+      }
+    };
+
     // Register socket event listeners
     socket.on("receive_task_update", handleTaskUpdate);
     socket.on("receive_task_added", handleTaskAdded);
+    socket.on("receive_task_deleted", handleTaskDelete);
 
     // Cleanup function to remove listeners
     return () => {
       socket.off("receive_task_update", handleTaskUpdate);
       socket.off("receive_task_added", handleTaskAdded);
+      socket.off("receive_task_deleted", handleTaskDelete);
     };
   }, [socket, roomId, dispatch]);
 

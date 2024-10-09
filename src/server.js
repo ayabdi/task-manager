@@ -26,10 +26,15 @@ app.prepare().then(() => {
       socket.to(data.room).emit("receive_task_update", data); 
     });
 
-    socket.on("add_task", (data)=>{
-      console.log("task add", data)
-      socket.to(data.room).emit("receive_task_added", data)
-    })
+    socket.on("add_task", (data) => {
+      console.log("task add", data);
+      socket.to(data.room).emit("receive_task_added", data);
+    });
+
+    socket.on("delete_task", (data) => {
+      console.log("task delete", data);
+      socket.to(data.room).emit("receive_task_deleted", data);
+    });
     socket.on("disconnect", () => {
       console.log(`User disconnected: ${socket.id}`);
     });
