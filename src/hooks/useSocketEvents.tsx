@@ -13,7 +13,7 @@ const useSocketEvents = (user?: User) => {
   const roomId = useSelector(
     (state: RootState) => state.user.userRecord?.teamId
   );
-  
+
   // Function to emit events
   const emitTaskUpdate = (task: any) => {
     if (!roomId) throw new Error("No roomid");
@@ -24,7 +24,7 @@ const useSocketEvents = (user?: User) => {
     if (!roomId) throw new Error("No roomid");
     const result = await dispatch(addTaskAsync(task)).unwrap();
     if (result) {
-      socket?.emit("add_task", { room: roomId, task });
+      socket?.emit("add_task", { room: roomId, task: result });
     }
   };
 

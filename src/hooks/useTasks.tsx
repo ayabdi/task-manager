@@ -19,6 +19,7 @@ export const useTasks = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { emitAddTask, emitTaskUpdate } = useSocketEvents(); // Call the socket event handler
 
+  console.log(tasks)
   // State for tracking active column and task during drag
   const [activeColumn, setActiveColumn] = useState<ColumnType | null>(null);
   const [activeTask, setActiveTask] = useState<Task | null>(null);
