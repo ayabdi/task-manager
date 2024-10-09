@@ -1,9 +1,8 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-// import editicon from "../../../assets/edit.svg";
-
 import { useAppDispatch } from "@/store";
 import { setEditorState, Task } from "@/store/tasks";
+import Image from "next/image";
 
 interface Props {
   task?: Task;
@@ -62,9 +61,16 @@ function TaskCard({ task }: Props) {
     >
       <div className="flex w-full max-h-20 overflow-clip">
         {task?.title}
-        
+
         <div className="flex ml-auto gap-1">
-          <img  className="h-4 w-4 ml-auto cursor-pointer" onClick={selectTask} />
+          <Image
+            src="edit.svg"
+            alt="edit"
+            height={4}
+            width={4}
+            className="h-4 w-4 ml-auto cursor-pointer"
+            onClick={selectTask}
+          />
         </div>
       </div>
 

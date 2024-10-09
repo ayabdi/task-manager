@@ -1,3 +1,4 @@
+import { signOut } from "next-auth/react"
 
 
 const Header = () => {
@@ -7,7 +8,7 @@ const Header = () => {
       <h1>Tasks</h1>
       <div
         className="text-sm mt-auto text-blue-500 cursor-pointer pb-1 hover:underline"
-        onClick={() => {}}
+        onClick={() => signOut()}
       >
         Sign Out →
       </div>

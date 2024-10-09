@@ -5,15 +5,16 @@ import Button from "@/components/Button";
 import { useLogin } from "@/hooks/useLogin";
 
 export default function LoginPage() {
-  const {router, handleChange, handleLogin, isFormValid, isLoading } = useLogin()
+  const { router, handleChange, handleLogin, isFormValid, isLoading } =
+    useLogin();
 
   return (
     <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <img
           alt="Your Company"
-          src="https://tailwindui.com/img/logos/mark.svg?color=orange&shade=600"
-          className="mx-auto h-10 w-auto"
+          src="https://tailwindui.com/plus/img/logos/mark.svg?color=orange&shade=600"
+          className="mx-auto h-14 w-auto"
         />
         <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
           Sign in to your account
@@ -21,7 +22,12 @@ export default function LoginPage() {
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form action="#" method="POST" className="space-y-6" onSubmit={handleLogin}>
+        <form
+          action="#"
+          method="POST"
+          className="space-y-6"
+          onSubmit={handleLogin}
+        >
           <Input
             name="email"
             type="email"
@@ -50,15 +56,18 @@ export default function LoginPage() {
         </form>
 
         <div className="text-sm mt-1.5">
-          <a href="#" className="font-semibold text-orange-600 hover:text-orange-500">
+          <a
+            href="#"
+            className="font-semibold text-orange-600 hover:text-orange-500"
+          >
             Forgot password?
           </a>
         </div>
 
         <p className="mt-5 text-center text-sm text-gray-500">
-          Not a member?{' '}
+          Not a member?{" "}
           <a
-            onClick={() => router.push('/signup')}
+            onClick={() => router.push("/signup")}
             className="font-semibold leading-6 text-orange-600 hover:text-orange-500 hover:underline cursor-pointer"
           >
             Sign Up Here
@@ -66,5 +75,5 @@ export default function LoginPage() {
         </p>
       </div>
     </div>
-  )
+  );
 }
