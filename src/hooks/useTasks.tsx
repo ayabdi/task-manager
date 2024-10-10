@@ -17,7 +17,6 @@ export const useTasks = () => {
   // Fetch tasks and get update mutation
   const tasks = useSelector((state: RootState) => state.tasks.tasks);
 
-  console.log({tasks})
   const dispatch = useDispatch<AppDispatch>();
   const { emitAddTask, emitTaskUpdate } = useSocketEvents(); // Call the socket event handler
   

@@ -88,9 +88,7 @@ const TaskEditor = () => {
         close={() => setDeleteModalOpen(false)}
         title={dict.deleteTask}
       >
-        <p className="text-sm text-gray-500">
-          {dict.deleteConfirmation}
-        </p>
+        <p className="text-sm text-gray-500">{dict.deleteConfirmation}</p>
 
         <div className="mt-8 pb-2 flex gap-2">
           <Button
