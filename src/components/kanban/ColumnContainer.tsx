@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import TaskCard from "./TaskCard";
 import { setEditorState, Task, TaskStatus } from "@/store/tasks";
 import { useAppDispatch } from "@/store";
+import { useTaskProvider } from "@/providers/tasks-provider";
 
 interface Props {
   column: string;
@@ -12,6 +13,7 @@ interface Props {
 }
 
 const ColumnContainer: React.FC<Props> = ({ column, tasks, columnColor }) => {
+  const { dict } = useTaskProvider()
   const dispatch = useAppDispatch();
 
   const tasksIds = useMemo(() => {
@@ -74,13 +76,13 @@ const ColumnContainer: React.FC<Props> = ({ column, tasks, columnColor }) => {
         className={`text-sm ${bgColumnHeader} h-[80px] rounded-md px-4 py-3 font-bold flex flex-col`}
       >
         <div className="flex">
-          <div className={`${bgColumnTag} rounded-xl px-[22px]`}>{column}</div>
+          <div className={`${bgColumnTag} rounded-xl px-[22px]`}>{dict[column]}</div>
         </div>
         <div
           className="flex text-stone-500 font-medium my-3 mx-2 cursor-pointer"
           onClick={createNew}
         >
-          + add task
+          + {dict.addTask}
         </div>
       </div>
 

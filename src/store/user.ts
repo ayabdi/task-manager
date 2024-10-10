@@ -10,7 +10,7 @@ interface UserState {
 const initialState: UserState = {
   userRecord: null,
   loading: false,
-  error: null,
+  error: null
 };
 
 // Async thunk to fetch user data
@@ -31,7 +31,7 @@ const userSlice = createSlice({
   reducers: {
     clearUserRecord(state) {
       state.userRecord = null; // Clear the user record
-    },
+    },    
   },
   extraReducers: (builder) => {
     builder

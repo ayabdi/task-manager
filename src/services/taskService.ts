@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+
 const prisma = new PrismaClient();
 
 export const getTasks = async (userId: string) => {
@@ -11,6 +12,12 @@ export const getTasks = async (userId: string) => {
           },
         },
       },
+    },
+    select: {
+      id: true,
+      title: true,
+      description: true,
+      status: true,
     },
   });
 };

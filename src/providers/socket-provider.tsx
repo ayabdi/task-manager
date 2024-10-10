@@ -1,3 +1,5 @@
+"use client";
+
 import { AppDispatch, RootState } from "@/store";
 import { addTask, deleteTask, updateTask } from "@/store/tasks";
 import React, { createContext, useContext, useEffect, useState } from "react";

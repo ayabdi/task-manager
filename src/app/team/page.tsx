@@ -52,7 +52,7 @@ export default function TeamsPage() {
         throw new Error("Failed to join team");
       }
 
-      router.push('/tasks')
+      router.push("/tasks");
     } catch (error) {
       console.error(error);
     } finally {
@@ -87,7 +87,9 @@ export default function TeamsPage() {
             setSelected={(s) => selectTeam(s)}
           />
           <div className="!mt-6">
-            <Button type="submit" loading={loading}>Join Team</Button>
+            <Button type="submit" loading={loading}>
+              Join Team
+            </Button>
           </div>
         </form>
       </div>

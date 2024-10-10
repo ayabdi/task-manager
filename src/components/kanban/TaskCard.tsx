@@ -1,3 +1,5 @@
+"use client";
+
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useAppDispatch } from "@/store";
@@ -64,7 +66,7 @@ function TaskCard({ task }: Props) {
 
         <div className="flex ml-auto gap-1">
           <Image
-            src="edit.svg"
+            src="../icons/edit.svg"
             alt="edit"
             height={4}
             width={4}

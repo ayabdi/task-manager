@@ -5,8 +5,8 @@ export type TaskStatus = "BACKLOG" | "TODO" | "IN PROGRESS" | "DONE";
 export interface Task {
   id: string;
   title: string;
-  description?: string;
-  status: TaskStatus;
+  description?: string | null
+  status: TaskStatus | string
 }
 
 interface EditorState {
@@ -73,6 +73,10 @@ const tasksSlice = createSlice({
   name: "tasks",
   initialState,
   reducers: {
+    setTasks(state, action: PayloadAction<Task[]>) {
+      console.log(action.payload)
+      state.tasks = action.payload;
+    },
     addTask(state, action: PayloadAction<Task>) {
       state.tasks.push(action.payload);
     },
@@ -161,6 +165,7 @@ const tasksSlice = createSlice({
 
 // Exporting actions
 export const {
+  setTasks,
   addTask,
   updateTaskStatus,
   updateTask,

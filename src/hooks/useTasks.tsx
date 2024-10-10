@@ -16,10 +16,11 @@ import { fetchUserRecord } from "@/store/user";
 export const useTasks = () => {
   // Fetch tasks and get update mutation
   const tasks = useSelector((state: RootState) => state.tasks.tasks);
+
+  console.log({tasks})
   const dispatch = useDispatch<AppDispatch>();
   const { emitAddTask, emitTaskUpdate } = useSocketEvents(); // Call the socket event handler
-
-  console.log(tasks)
+  
   // State for tracking active column and task during drag
   const [activeColumn, setActiveColumn] = useState<ColumnType | null>(null);
   const [activeTask, setActiveTask] = useState<Task | null>(null);
@@ -102,7 +103,6 @@ export const useTasks = () => {
   }
 
   useEffect(() => {
-    dispatch(fetchTasks());
     dispatch(fetchUserRecord());
   }, [dispatch]);
 

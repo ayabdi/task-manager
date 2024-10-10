@@ -1,3 +1,6 @@
+"use client";
+
+
 import { DndContext, DragOverlay } from '@dnd-kit/core'
 import { SortableContext } from '@dnd-kit/sortable'
 import React from 'react'

@@ -1,3 +1,5 @@
+"use client";
+
 import { useTaskEditor } from "@/hooks/useTaskEditor";
 import Button from "../Button";
 import Drawer from "../Drawer";
@@ -5,6 +7,7 @@ import ListBox from "../ListBox";
 import Modal from "../Modal";
 import Input from "../Input";
 import Image from "next/image";
+import { useTaskProvider } from "@/providers/tasks-provider";
 
 const TaskEditor = () => {
   const {
@@ -20,15 +23,17 @@ const TaskEditor = () => {
     deleteModalOpen,
     setDeleteModalOpen,
   } = useTaskEditor();
+
+  const { dict } = useTaskProvider();
   return (
     <Drawer
       isOpen={isOpen}
       close={close}
-      title={selectedTask ? "Edit Task" : "Create Task"}
+      title={selectedTask ? dict.editTask : dict.createTask}
     >
       {selectedTask && (
         <Image
-          src="/Trash.svg"
+          src="../icons/Trash.svg"
           alt="delete"
           className="absolute h-5 w-5 right-6 -top-12 cursor-pointer"
           width={5}
@@ -45,7 +50,7 @@ const TaskEditor = () => {
             handleChange({ name: e.target.name, value: e.target.value })
           }
           required
-          label="Task Title"
+          label={dict.taskTitle}
         />
 
         <Input
@@ -55,11 +60,11 @@ const TaskEditor = () => {
           onChange={(e) =>
             handleChange({ name: e.target.name, value: e.target.value })
           }
-          label="Task Description"
+          label={dict.taskDescription}
         />
 
         <ListBox
-          label="Status"
+          label={dict.status}
           options={["COMPLETE", "IN_PROGRESS", "BACKLOG", "TODO"]}
           selected={formData.status!}
           setSelected={(s) => handleChange({ name: "status", value: s })}
@@ -69,10 +74,10 @@ const TaskEditor = () => {
             className="bg-white !text-black border hover:bg-stone-50"
             onClick={close}
           >
-            Cancel
+            {dict.cancel}
           </Button>
           <Button loading={loading} type="submit">
-            Save
+            {dict.save}
           </Button>
         </div>
       </form>
@@ -81,10 +86,10 @@ const TaskEditor = () => {
       <Modal
         isOpen={deleteModalOpen}
         close={() => setDeleteModalOpen(false)}
-        title="Delete Task?"
+        title={dict.deleteTask}
       >
         <p className="text-sm text-gray-500">
-          Are you sure you want to delete this task? This cannot be recovered
+          {dict.deleteConfirmation}
         </p>
 
         <div className="mt-8 pb-2 flex gap-2">
@@ -92,10 +97,10 @@ const TaskEditor = () => {
             className="bg-white !text-black border hover:bg-stone-50"
             onClick={close}
           >
-            Cancel
+            {dict.cancel}
           </Button>
           <Button loading={isDeleting} onClick={onDelete}>
-            Delete
+            {dict.delete}
           </Button>
         </div>
       </Modal>
