@@ -85,11 +85,8 @@ export const useSignUp = () => {
             email: formData.email,
             password: formData.password,
           }).then((c) => {
-            if (c?.ok) router.push("/tasks");
+            if (c?.ok) router.push("/team");
           });
-        } else {
-          const data = await res.json();
-          console.log(data);
         }
       } finally {
         setLoading(false);

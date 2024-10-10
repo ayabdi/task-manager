@@ -9,7 +9,7 @@ import { useEffect, useMemo, useState } from "react";
 import { AppDispatch, RootState } from "@/store";
 import { fetchTasks, Task, TaskStatus, updateTask } from "@/store/tasks";
 import { useDispatch, useSelector } from "react-redux";
-import { ColumnType } from "@/components/kanban/TaskBoard";
+import { ColumnType } from "@/components/tasks/TaskBoard";
 import useSocketEvents from "./useSocketEvents";
 import { fetchUserRecord } from "@/store/user";
 

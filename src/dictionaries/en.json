@@ -6,9 +6,11 @@
     "password": "Password",
     "forgotPassword": "Forgot password?",
     "signIn": "Sign in",
-    "signUpHere": "Sign Up Here"
+    "signUpHere": "Sign Up Here",
+    "notAMember": "Not a member?"
   },
   "signup": {
+    "signup": "Sign Up",
     "header": "Sign up To Manage Your Tasks",
     "email": "Email Address",
     "password": "Password",
@@ -18,8 +20,9 @@
   },
 
   "team": {
-    "notAMember": "Not a member?",
-    "joinTeam": "Join a Team, Collaborate!"
+    "header": "Join a Team, Collaborate!",
+    "joinTeam": "Join Team",
+    "teams": "Teams"
   },
   "tasks": {
     "header": "Tasks",

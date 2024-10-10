@@ -1,11 +1,10 @@
 "use client";
 
 import { useTaskProvider } from "@/providers/tasks-provider";
-import { signOut } from "next-auth/react"
-
+import { signOut } from "next-auth/react";
 
 const Header = () => {
-const { dict } = useTaskProvider()
+  const { dict } = useTaskProvider();
   return (
     <div className="text-3xl w-full border-b pb-1 flex justify-between">
       <h1>{dict.header}</h1>
@@ -16,7 +15,7 @@ const { dict } = useTaskProvider()
         {dict.signOut}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

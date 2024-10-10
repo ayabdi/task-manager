@@ -6,9 +6,11 @@
     "password": "كلمة المرور",
     "forgotPassword": "هل نسيت كلمة المرور؟",
     "signIn": "تسجيل الدخول",
-    "signUpHere": "سجل هنا"
+    "signUpHere": "سجل هنا",
+    "notAMember": "لست عضواً؟"
   },
   "signup": {
+    "signup": "اشتراك",
     "header": "سجل لإدارة مهامك",
     "email": "عنوان البريد الإلكتروني",
     "password": "كلمة المرور",
@@ -17,8 +19,9 @@
     "loginHere": "تسجيل الدخول هنا"
   },
   "team": {
-    "notAMember": "لست عضواً؟",
-    "joinTeam": "انضم إلى فريق، وتعاون!"
+    "header": "انضم إلى فريق، وتعاون!",
+    "joinTeam": "انضم إلى الفريق",
+    "teams": "الفرق"
   },
   "tasks": {
     "header": "المهام",
