@@ -11,7 +11,10 @@ interface Props {
 }
 
 function TaskCard({ task }: Props) {
+  // Import necessary hooks and utilities
   const dispatch = useAppDispatch();
+  
+  // Set up sortable properties for the task
   const {
     setNodeRef,
     attributes,
@@ -20,34 +23,37 @@ function TaskCard({ task }: Props) {
     transition,
     isDragging,
   } = useSortable({
-    id: task?.id || "",
+    id: task?.id || "", // Unique identifier for the task
     data: {
-      type: "Task",
+      type: "Task", // Type of draggable item
       task,
     },
   });
 
+  // Define style for the task card based on dragging state
   const style = {
     transition,
     transform: CSS.Transform.toString(transform),
   };
 
+  // Render a placeholder when the task is being dragged
   if (isDragging) {
     return (
       <div
         ref={setNodeRef}
         style={style}
-        className="opacity-30  p-2.5 h-[100px] min-h-[100px] items-center flex text-left rounded-xl cursor-grab relative"
+        className="opacity-30 p-2.5 h-[100px] min-h-[100px] items-center flex text-left rounded-xl cursor-grab relative"
       />
     );
   }
 
+  // Function to select the task and open the editor
   const selectTask = () => {
-    if (!task) return;
+    if (!task) return; // Exit if no task is provided
     dispatch(
       setEditorState({
-        selectedTask: task,
-        isOpen: true,
+        selectedTask: task, // Set the selected task
+        isOpen: true, // Open the editor
       })
     );
   };

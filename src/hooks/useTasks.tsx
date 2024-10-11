@@ -5,20 +5,19 @@ import {
   DragEndEvent,
   DragStartEvent,
 } from "@dnd-kit/core";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { AppDispatch, RootState } from "@/store";
-import { fetchTasks, Task, TaskStatus, updateTask } from "@/store/tasks";
+import { Task, TaskStatus, updateTask } from "@/store/tasks";
 import { useDispatch, useSelector } from "react-redux";
 import { ColumnType } from "@/components/tasks/TaskBoard";
 import useSocketEvents from "./useSocketEvents";
-import { fetchUserRecord } from "@/store/user";
 
 export const useTasks = () => {
   // Fetch tasks and get update mutation
   const tasks = useSelector((state: RootState) => state.tasks.tasks);
 
   const dispatch = useDispatch<AppDispatch>();
-  const { emitAddTask, emitTaskUpdate } = useSocketEvents(); // Call the socket event handler
+  const { emitTaskUpdate } = useSocketEvents(); // Call the socket event handler
   
   // State for tracking active column and task during drag
   const [activeColumn, setActiveColumn] = useState<ColumnType | null>(null);
@@ -100,10 +99,6 @@ export const useTasks = () => {
       onUpdateTask(updatedTask.id, updatedTask); // Dispatch the update action
     }
   }
-
-  useEffect(() => {
-    dispatch(fetchUserRecord());
-  }, [dispatch]);
 
   return {
     activeColumn,

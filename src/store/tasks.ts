@@ -1,62 +1,60 @@
-import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit'
+import axios from 'axios'
 
-export type TaskStatus = "BACKLOG" | "TODO" | "IN PROGRESS" | "DONE";
+// Define possible task statuses
+export type TaskStatus = 'BACKLOG' | 'TODO' | 'IN PROGRESS' | 'DONE'
+
+// Task interface representing a task object
 export interface Task {
-  id: string;
-  title: string;
+  id: string
+  title: string
   description?: string | null
   status: TaskStatus | string
 }
 
+// Editor state interface for managing task editor state
 interface EditorState {
-  isOpen: boolean;
-  status?: TaskStatus;
-  selectedTask?: Task | null;
-  deleteModalOpen: boolean;
-  title: string; // New state for task title
-  description: string; // New state for task description
+  isOpen: boolean
+  status?: TaskStatus
+  selectedTask?: Task | null
+  deleteModalOpen: boolean
+  title: string // State for task title
+  description: string // State for task description
 }
 
+// Main tasks state interface
 interface TasksState {
-  selectedTask?: Task;
-  tasks: Task[];
-  editorState: EditorState; // Added editor state to the main state
+  selectedTask?: Task
+  tasks: Task[]
+  editorState: EditorState // Editor state included in main state
 }
 
-export const fetchTasks = createAsyncThunk("tasks/fetchTasks", async () => {
-  const response = await axios.get("/api/tasks");
-  return response.data;
-});
+// Async thunk for adding a task
+export const addTaskAsync = createAsyncThunk('tasks/addTask', async (task: Omit<Task, 'id'>) => {
+  const response = await axios.post('/api/tasks', task)
+  return response.data // Return created task
+})
 
-export const addTaskAsync = createAsyncThunk(
-  "tasks/addTask",
-  async (task: Omit<Task, "id">) => {
-    const response = await axios.post("/api/tasks", task);
-    return response.data; // Assuming the API returns the created task
-  }
-);
-
+// Async thunk for updating a task
 export const updateTaskAsync = createAsyncThunk(
-  "tasks/updateTask",
+  'tasks/updateTask',
   async ({ id, body }: { id: string; body: Partial<Task> }) => {
     const response = await axios.put(`/api/tasks/${id}`, body, {
       headers: {
-          'Content-Type': 'application/json', // Ensure the content type is set
-      },
-  })
-    return response.data; // Assuming the API returns the updated task
+        'Content-Type': 'application/json' // Set content type
+      }
+    })
+    return response.data // Return updated task
   }
-);
+)
 
-export const deleteTaskAsync = createAsyncThunk(
-  "tasks/deleteTask",
-  async (id: string) => {
-    await axios.delete(`/api/tasks/${id}`);
-    return id; // Return the id of the deleted task
-  }
-);
+// Async thunk for deleting a task
+export const deleteTaskAsync = createAsyncThunk('tasks/deleteTask', async (id: string) => {
+  await axios.delete(`/api/tasks/${id}`)
+  return id // Return the id of the deleted task
+})
 
+// Initial state for tasks
 const initialState: TasksState = {
   selectedTask: undefined,
   tasks: [],
@@ -64,106 +62,77 @@ const initialState: TasksState = {
     isOpen: false,
     selectedTask: null,
     deleteModalOpen: false,
-    title: "",
-    description: "",
-  },
-};
+    title: '',
+    description: ''
+  }
+}
 
+// Create tasks slice
 const tasksSlice = createSlice({
-  name: "tasks",
+  name: 'tasks',
   initialState,
   reducers: {
     setTasks(state, action: PayloadAction<Task[]>) {
-      console.log(action.payload)
-      state.tasks = action.payload;
+      state.tasks = action.payload // Set tasks from payload
     },
     addTask(state, action: PayloadAction<Task>) {
-      state.tasks.push(action.payload);
+      state.tasks.push(action.payload) // Add new task
     },
-    updateTask(
-      state,
-      action: PayloadAction<{ id: string; body: Partial<Task> }>
-    ) {
-      const taskIndex = state.tasks.findIndex(
-        (t) => t.id === action.payload.id
-      );
+    updateTask(state, action: PayloadAction<{ id: string; body: Partial<Task> }>) {
+      const taskIndex = state.tasks.findIndex(t => t.id === action.payload.id)
       if (taskIndex !== -1) {
-        // Create a new task object with updated properties
+        // Update existing task
         const updatedTask = {
           ...state.tasks[taskIndex],
-          ...action.payload.body,
-        };
-
-        // Replace the old task with the updated task
-        state.tasks[taskIndex] = updatedTask;
+          ...action.payload.body
+        }
+        state.tasks[taskIndex] = updatedTask // Replace old task
       }
     },
-
     deleteTask(state, action: PayloadAction<string>) {
-      state.tasks = state.tasks.filter((task) => task.id !== action.payload);
+      state.tasks = state.tasks.filter(task => task.id !== action.payload) // Remove deleted task
     },
-
-    updateTaskStatus(
-      state,
-      action: PayloadAction<{ id: string; status: Task["status"] }>
-    ) {
-      const task = state.tasks.find((t) => t.id === action.payload.id);
-
+    updateTaskStatus(state, action: PayloadAction<{ id: string; status: Task['status'] }>) {
+      const task = state.tasks.find(t => t.id === action.payload.id)
       if (task) {
-        task.status = action.payload.status;
+        task.status = action.payload.status // Update task status
       }
     },
-
     selectTask(state, action: PayloadAction<Task | undefined>) {
-      state.selectedTask = action.payload;
+      state.selectedTask = action.payload // Set selected task
     },
-
-    // New reducers for editor state management
+    // Manage editor state
     setEditorState(state, action: PayloadAction<Partial<EditorState>>) {
-      state.editorState = { ...state.editorState, ...action.payload };
+      state.editorState = { ...state.editorState, ...action.payload } // Update editor state
     },
-
     resetEditorState(state) {
       state.editorState = {
         ...state.editorState,
         isOpen: false,
         deleteModalOpen: false,
-        title: "",
-        description: "",
-      };
-    },
+        title: '',
+        description: ''
+      } // Reset editor state
+    }
   },
-  extraReducers: (builder) => {
+  extraReducers: builder => {
     builder
-      .addCase(fetchTasks.fulfilled, (state, action: PayloadAction<Task[]>) => {
-        state.tasks = action.payload;
-      })
       .addCase(addTaskAsync.fulfilled, (state, action: PayloadAction<Task>) => {
-        state.tasks.push(action.payload);
+        state.tasks.push(action.payload) // Add task on successful addition
       })
-      .addCase(
-        updateTaskAsync.fulfilled,
-        (state, action: PayloadAction<Task>) => {
-          const taskIndex = state.tasks.findIndex(
-            (t) => t.id === action.payload.id
-          );
-          if (taskIndex !== -1) {
-            state.tasks[taskIndex] = action.payload; // Update the task in the state
-          }
+      .addCase(updateTaskAsync.fulfilled, (state, action: PayloadAction<Task>) => {
+        const taskIndex = state.tasks.findIndex(t => t.id === action.payload.id)
+        if (taskIndex !== -1) {
+          state.tasks[taskIndex] = action.payload // Update task in state
         }
-      )
-      .addCase(
-        deleteTaskAsync.fulfilled,
-        (state, action: PayloadAction<string>) => {
-          state.tasks = state.tasks.filter(
-            (task) => task.id !== action.payload
-          ); // Remove the deleted task
-        }
-      );
-  },
-});
+      })
+      .addCase(deleteTaskAsync.fulfilled, (state, action: PayloadAction<string>) => {
+        state.tasks = state.tasks.filter(task => task.id !== action.payload) // Remove task from state
+      })
+  }
+})
 
-// Exporting actions
+// Export actions for use in components
 export const {
   setTasks,
   addTask,
@@ -172,6 +141,7 @@ export const {
   deleteTask,
   selectTask,
   setEditorState,
-  resetEditorState,
-} = tasksSlice.actions;
-export default tasksSlice.reducer;
+  resetEditorState
+} = tasksSlice.actions
+
+export default tasksSlice.reducer // Export reducer

@@ -1,7 +1,13 @@
 import { PrismaClient } from "@prisma/client";
 
+// Initialize Prisma Client
 const prisma = new PrismaClient();
 
+/**
+ * Fetch tasks for a specific user.
+ * @param userId - The ID of the user to fetch tasks for.
+ * @returns A list of tasks associated with the user's team.
+ */
 export const getTasks = async (userId: string) => {
   return prisma.task.findMany({
     where: {
@@ -22,6 +28,11 @@ export const getTasks = async (userId: string) => {
   });
 };
 
+/**
+ * Create a new task.
+ * @param taskData - The data for the new task.
+ * @returns The created task.
+ */
 export const createTask = async ({
   title,
   description,
@@ -37,12 +48,19 @@ export const createTask = async ({
     data: {
       title,
       description,
-      status: status || "BACKLOG",
+      status: status || "BACKLOG", // Default status is BACKLOG
       teamId,
     },
   });
 };
 
+/**
+ * Update an existing task.
+ * @param id - The ID of the task to update.
+ * @param userId - The ID of the user making the update.
+ * @param updates - The updates to apply to the task.
+ * @returns The updated task.
+ */
 export const updateTask = async (
   id: string,
   userId: string,
@@ -67,6 +85,12 @@ export const updateTask = async (
   });
 };
 
+/**
+ * Delete a task.
+ * @param id - The ID of the task to delete.
+ * @param userId - The ID of the user requesting the deletion.
+ * @returns The deleted task.
+ */
 export const deleteTask = async (id: string, userId: string) => {
   return prisma.task.delete({
     where: {

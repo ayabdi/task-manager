@@ -1,29 +1,37 @@
 import { useRouter } from "next/navigation";
 import { useState, FormEvent } from "react";
-import { getCsrfToken, signIn } from "next-auth/react";
+import { signIn } from "next-auth/react";
 
+// Custom hook for handling login functionality
 export const useLogin = () => {
+  // State to hold form data
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+
+  // State to manage loading status
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
+  // Function to handle login form submission
   const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     setLoading(true);
+
+    // Attempt to sign in with credentials
     await signIn("credentials", {
       redirect: false,
       ...formData,
     })
       .then((response) => {
+        // Redirect to tasks page on successful login
         if (response?.ok) router.push("/tasks");
       })
-      .finally(() => setLoading(false));
+      .finally(() => setLoading(false)); // Reset loading state
   };
 
+  // Function to handle input changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -32,10 +40,12 @@ export const useLogin = () => {
     }));
   };
 
+  // Check if the form is valid
   const isFormValid = Object.values(formData).every(
     (value) => value.trim() !== ""
   );
 
+  // Expose necessary properties and functions
   return {
     router,
     handleChange,

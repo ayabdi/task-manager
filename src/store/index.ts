@@ -1,13 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch } from "react-redux";
 import tasksReducer from "./tasks";
-import userReducer from './user'
 import socketReducer from './socket'
 
 export const store = configureStore({
   reducer: {
     tasks: tasksReducer,
-    user: userReducer,
     socket: socketReducer
   },
 });

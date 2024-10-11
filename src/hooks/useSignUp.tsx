@@ -1,25 +1,33 @@
 import { useRouter } from "next/navigation";
 import { useState, FormEvent } from "react";
-import { getCsrfToken, signIn } from "next-auth/react";
+import { signIn } from "next-auth/react";
 
+// Custom hook for handling user sign-up
 export const useSignUp = () => {
+  // State to hold form data
   const [formData, setFormData] = useState({
     email: "",
     password: "",
     name: "",
   });
+
+  // State to hold validation errors
   const [errors, setErrors] = useState({
     email: "",
     password: "",
     name: "",
   });
+
+  // State to manage loading status
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
+  // Function to validate form inputs
   const validateForm = () => {
     let isValid = true;
     const newErrors = { ...errors };
 
+    // Validate email
     if (!formData.email) {
       newErrors.email = "Email is required";
       isValid = false;
@@ -30,6 +38,7 @@ export const useSignUp = () => {
       newErrors.email = "";
     }
 
+    // Validate password
     if (!formData.password) {
       newErrors.password = "Password is required";
       isValid = false;
@@ -45,6 +54,7 @@ export const useSignUp = () => {
       }
     }
 
+    // Validate name
     if (!formData.name) {
       newErrors.name = "First name is required";
       isValid = false;
@@ -56,6 +66,7 @@ export const useSignUp = () => {
     return isValid;
   };
 
+  // Function to handle input changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -64,6 +75,7 @@ export const useSignUp = () => {
     }));
   };
 
+  // Function to handle form submission
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -79,7 +91,7 @@ export const useSignUp = () => {
         });
 
         if (res.ok) {
-          // Optionally, sign in the user automatically after successful registration
+          // Sign in the user automatically after successful registration
           await signIn("credentials", {
             redirect: false,
             email: formData.email,
@@ -94,10 +106,12 @@ export const useSignUp = () => {
     }
   };
 
+  // Check if the form is valid
   const isFormValid = Object.values(formData).every(
     (value) => value.trim() !== ""
   );
 
+  // Expose necessary properties and functions
   return {
     handleChange,
     handleSubmit,

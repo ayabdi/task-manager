@@ -5,7 +5,6 @@ const dictionaries: any = {
 }
  
 export const getDictionary = async (locale: string) => {
-
     // Filter out the region code from the locale (e.g., -US in en-US)
     const filteredLocale = locale.split('-')[0];
 

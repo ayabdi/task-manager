@@ -1,36 +1,43 @@
 "use client";
 
-import { AppDispatch, RootState } from "@/store";
+// Import necessary modules and types
+import { AppDispatch } from "@/store";
 import { addTask, deleteTask, updateTask } from "@/store/tasks";
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { io, Socket } from "socket.io-client";
+import { useTaskProvider } from "./tasks-provider";
 
+// Define the context type for socket
 interface SocketContextType {
   socket: Socket | null;
   isConnected: boolean;
 }
 
+// Create the SocketContext
 const SocketContext = createContext<SocketContextType | undefined>(undefined);
 
+// SocketProvider component
 export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [socket, setSocket] = useState<Socket | null>(null);
   const [isConnected, setIsConnected] = useState(false);
 
-  const roomId = useSelector(
-    (state: RootState) => state.user.userRecord?.teamId
-  );
+  // Get user and roomId from the task provider
+  const { user } = useTaskProvider();
+  const roomId = user.teamId;
 
   const dispatch = useDispatch<AppDispatch>();
 
+  // Effect to manage socket connection
   useEffect(() => {
     if (!roomId) return;
 
-    const newSocket = io(); // Replace with your socket server URL
+    const newSocket = io(); // Initialize socket connection
     setSocket(newSocket);
 
+    // Handle socket connection events
     newSocket.on("connect", () => {
       newSocket.emit("join_room", roomId);
       setIsConnected(true);
@@ -40,6 +47,7 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({
       setIsConnected(false);
     });
 
+    // Cleanup on component unmount
     return () => {
       newSocket.disconnect();
     };
@@ -47,8 +55,7 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({
 
   // Effect to handle socket event listeners
   useEffect(() => {
-    // Exit if socket or roomId is not available
-    if (!socket || !roomId) return;
+    if (!socket || !roomId) return; // Exit if socket or roomId is not available
 
     // Handle task update event
     const handleTaskUpdate = (data: any) => {
@@ -84,6 +91,7 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({
     };
   }, [socket, roomId, dispatch]);
 
+  // Provide socket and connection status to children
   return (
     <SocketContext.Provider value={{ socket, isConnected }}>
       {children}
@@ -91,6 +99,7 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 };
 
+// Custom hook to use the SocketContext
 export const useSocket = (): Socket | undefined | null => {
   const context = useContext(SocketContext);
   if (!context) {

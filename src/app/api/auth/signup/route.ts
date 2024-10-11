@@ -39,8 +39,3 @@ export async function POST(req: Request) {
   const user = await createUser(body);
   return Response.json(user);
 }
-
-export async function GET(req: Request) {
-  console.log(req.body);
-  return Response.json("Hi");
-}
