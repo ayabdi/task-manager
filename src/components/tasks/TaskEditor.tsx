@@ -1,5 +1,5 @@
 "use client";
-
+import React from 'react'
 import { useTaskEditor } from "@/hooks/useTaskEditor";
 import Button from "../Button";
 import Drawer from "../Drawer";
@@ -41,7 +41,7 @@ const TaskEditor = () => {
           onClick={() => setDeleteModalOpen(true)}
         />
       )}
-      <form className="flex flex-col gap-3 h-full" onSubmit={onSubmit}>
+      <form  data-testid="task-editor-form" className="flex flex-col gap-3 h-full" onSubmit={onSubmit}>
         <Input
           name="title"
           type="text"
@@ -50,6 +50,7 @@ const TaskEditor = () => {
             handleChange({ name: e.target.name, value: e.target.value })
           }
           required
+          dataTestId="task-title-input"
           label={dict.taskTitle}
         />
 
@@ -57,6 +58,7 @@ const TaskEditor = () => {
           name="description"
           type="text"
           value={formData.description || ""}
+          dataTestId="task-description-input"
           onChange={(e) =>
             handleChange({ name: e.target.name, value: e.target.value })
           }

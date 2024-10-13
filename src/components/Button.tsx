@@ -22,6 +22,7 @@ const Button: React.FC<ButtonProps> = ({
       onClick={onClick}
       disabled={disabled}
       type={type}
+      aria-busy={loading}
       className={`
         ${
           disabled

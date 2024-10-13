@@ -1,5 +1,6 @@
 "use client";
 
+import React from 'react'
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useAppDispatch } from "@/store";
@@ -66,6 +67,7 @@ function TaskCard({ task }: Props) {
       {...listeners}
       className="flex flex-col border p-4 h-max rounded-md gap-2.5 hover:ring-1 hover:ring-inset hover:ring-background-blue-50 cursor-grab relative task font-Inter"
       onDoubleClick={selectTask}
+      data-testid={`task-${task?.id}`}
     >
       <div className="flex w-full max-h-20 overflow-clip">
         {task?.title}

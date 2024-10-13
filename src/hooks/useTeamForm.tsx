@@ -46,3 +46,5 @@ const useTeamForm = (teams: Team[]) => {
 
   return { loading, onSubmit, selectTeam, selectedTeam }; // Expose state and functions
 };
+
+export default useTeamForm;

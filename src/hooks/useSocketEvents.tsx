@@ -3,6 +3,7 @@ import {
   addTaskAsync,
   updateTaskAsync,
   deleteTaskAsync,
+  addTask,
 } from "@/store/tasks"; // Import Redux actions for task management
 
 import { AppDispatch } from "@/store";
@@ -29,7 +30,7 @@ const useSocketEvents = () => {
   // Emit an event to add a new task
   const emitAddTask = async (task: any) => {
     if (!roomId) throw new Error("No roomid"); // Ensure room ID is available
-    const result = await dispatch(addTaskAsync(task)).unwrap();
+    const result = await dispatch(addTask(task))
     
     if (result) {
       socket?.emit("add_task", { room: roomId, task: result }); // Emit add event

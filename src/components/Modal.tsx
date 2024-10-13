@@ -1,3 +1,4 @@
+import React from 'react'
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
 
 interface Props {

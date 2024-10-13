@@ -4,4 +4,7 @@ module.exports = {
     defaultLocale: "en",
     localeDetection: true,
   },
+  experimental: {
+    forceSwcTransforms: true,
+  }
 };

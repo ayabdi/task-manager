@@ -26,7 +26,12 @@ const LanguageSelect: React.FC = () => {
     }
   }, [router])
 
+  // ... existing code ...
+
   const changeLanguageRoute = (lang: 'en' | 'ar') => {
+    if (typeof window === 'undefined') {
+      return '' // Return an empty string or handle this case appropriately
+    }
     const currentPath = window.location.pathname
     if (lang === 'en') {
       return currentPath.replace(/^\/ar/, '/en-US')
