@@ -37,6 +37,7 @@ export const authOptions: AuthOptions = {
             user.password
           );
           if (!isValidPassword) {
+            console.log('Invalid pass')
             return null; // Invalid password
           }
 

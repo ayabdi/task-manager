@@ -25,32 +25,52 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 //
-export {};
+export {}
+
+import io from 'socket.io-client'
 
 declare global {
   namespace Cypress {
     interface Chainable {
-      login(email: string, password: string): Chainable<void>
+      login(): Chainable<void>
+      sendSocketMessage(roomId: string, message: any): void
     }
   }
 }
 
 Cypress.Commands.add('login', () => {
-    cy.url().then((url) => {
-      if (url.includes('/login')) {
-        cy.get('input[name="email"]').clear().type('abdulrahmanabdi98@gmail.com');
-        cy.get('input[name="password"]').clear().type('THEgame005###');
-  
-        // Submit the login form
-        cy.get('button[type="submit"]').click();
-  
-        // Verify that the user is redirected to the tasks page
-        cy.url().should('include', '/tasks');
-  
-        // Optionally, check for a specific element on the tasks page to confirm login
-        cy.contains('Tasks').should('be.visible');
-      } else {
-        cy.log('User is already logged in, proceeding to tasks page.');
-      }
-    });
-  });
+  cy.url().then(url => {
+    if (url.includes('/login')) {
+      cy.get('input[name="email"]').clear().type('test@test2.com')
+      cy.get('input[name="password"]').clear().type('A0d|N$308]Z#')
+
+      // Submit the login form
+      cy.get('button[type="submit"]').click()
+
+      // Verify that the user is redirected to the tasks page
+      cy.url().should('include', '/tasks')
+
+      // Optionally, check for a specific element on the tasks page to confirm login
+      cy.contains('Tasks').should('be.visible')
+    } else {
+      cy.log('User is already logged in, proceeding to tasks page.')
+    }
+  })
+})
+
+Cypress.Commands.add('sendSocketMessage', (roomId, message) => {
+  // Access your WebSocket server instance and send a message
+  // This requires your server to be accessible from the test environment
+  // Example:
+  const socket = io('http://localhost:3000') // Replace with your server URL
+
+  socket.on('connect', () => {
+    console.log('Connected to WebSocket server')
+
+    // Join a room if necessary
+    socket.emit('join', roomId)
+
+    // Send a message to add task
+    socket.emit('add_task',{room: roomId, task: message})
+  })
+})

@@ -43,8 +43,7 @@ export const useSignUp = () => {
       newErrors.password = "Password is required";
       isValid = false;
     } else {
-      const passwordRegex =
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#\-_])[A-Za-z\d@$!%*?&#\-_]{8,}$/;
+      const passwordRegex = /^.{8,}$/;
       if (!passwordRegex.test(formData.password)) {
         newErrors.password =
           "Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character (@$!%*?&#-_)";
@@ -103,7 +102,7 @@ export const useSignUp = () => {
       } finally {
         setLoading(false);
       }
-    }
+     }
   };
 
   // Check if the form is valid

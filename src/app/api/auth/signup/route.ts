@@ -20,7 +20,7 @@ export async function POST(req: Request) {
 
   // Validate password strength
   const passwordRegex =
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#\-_])[A-Za-z\d@$!%*?&#\-_]{8,}$/;
+    /^.{8,}$/;
   if (!passwordRegex.test(password)) {
     return Response.json(
       {

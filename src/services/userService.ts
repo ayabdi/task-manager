@@ -46,7 +46,7 @@ export const createUser = async ({
  * @returns {Promise<Object>} The user's record containing name, email, and teamId.
  * @throws {Error} If no user is found or the user does not exist.
  */
-export const fetchUserRecord = async (userId: string) => {
+export const fetchUserRecord = async (userId?: string) => {
   if (!userId) {
     const session = await getServerSession(authOptions)
     // Check if the user is authenticated
