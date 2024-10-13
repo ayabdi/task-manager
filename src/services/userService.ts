@@ -1,10 +1,10 @@
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
-import { PrismaClient } from '@prisma/client';
-import bcrypt from 'bcrypt';
-import { getServerSession } from 'next-auth/next';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route'
+import prisma from '@/prisma/client'
+import { PrismaClient } from '@prisma/client'
+import bcrypt from 'bcrypt'
+import { Session } from 'next-auth'
+import { getServerSession } from 'next-auth/next'
 
-// Initialize Prisma Client
-const prisma = new PrismaClient();
 
 /**
  * Create a new user in the database.
@@ -19,13 +19,13 @@ export const createUser = async ({
   password,
   name
 }: {
-  email: string;
-  password: string;
-  name?: string;
+  email: string
+  password: string
+  name?: string
 }) => {
   // Hash the user's password
-  const hashedPassword = await bcrypt.hash(password, 10);
-  
+  const hashedPassword = await bcrypt.hash(password, 10)
+
   // Create a new user with a default team
   return prisma.user.create({
     data: {
@@ -38,37 +38,39 @@ export const createUser = async ({
         }
       }
     }
-  });
-};
+  })
+}
 
 /**
  * Fetch the current user's record from the database.
  * @returns {Promise<Object>} The user's record containing name, email, and teamId.
  * @throws {Error} If no user is found or the user does not exist.
  */
-export const fetchUserRecord = async () => {
-  const session = await getServerSession(authOptions);
-
-  // Check if the user is authenticated
-  if (!session?.userId) throw new Error('No user');
+export const fetchUserRecord = async (userId: string) => {
+  if (!userId) {
+    const session = await getServerSession(authOptions)
+    // Check if the user is authenticated
+    if (!session?.userId) throw new Error('No user')
+    userId = session.userId
+  }
 
   // Fetch the user from the database
   const user = await prisma.user.findUnique({
     where: {
-      id: session.userId!
+      id: userId!
     }
-  });
+  })
 
   // Check if the user exists
-  if (!user) throw new Error('User Not found');
+  if (!user) throw new Error('User Not found')
 
   // Return the user's details
   return {
     name: user.name,
     email: user.email,
     teamId: user.teamId
-  };
-};
+  }
+}
 
 /**
  * Retrieve a user by their email address.
@@ -80,5 +82,5 @@ export const getUserByEmail = async (email: string) => {
     where: {
       email
     }
-  });
-};
+  })
+}

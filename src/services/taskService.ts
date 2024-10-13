@@ -1,7 +1,5 @@
-import { PrismaClient } from "@prisma/client";
-
-// Initialize Prisma Client
-const prisma = new PrismaClient();
+import prisma from '@/prisma/client'
+import { PrismaClient } from '@prisma/client'
 
 /**
  * Fetch tasks for a specific user.
@@ -14,19 +12,19 @@ export const getTasks = async (userId: string) => {
       team: {
         members: {
           some: {
-            id: userId,
-          },
-        },
-      },
+            id: userId
+          }
+        }
+      }
     },
     select: {
       id: true,
       title: true,
       description: true,
-      status: true,
-    },
-  });
-};
+      status: true
+    }
+  })
+}
 
 /**
  * Create a new task.
@@ -37,22 +35,23 @@ export const createTask = async ({
   title,
   description,
   status,
-  teamId,
+  teamId
 }: {
-  title: string;
-  description?: string;
-  status?: string;
-  teamId: string;
+  title: string
+  description?: string
+  status?: string
+  teamId: string
 }) => {
+  if (!title) throw new Error('Title is required')
   return prisma.task.create({
     data: {
       title,
       description,
-      status: status || "BACKLOG", // Default status is BACKLOG
-      teamId,
-    },
-  });
-};
+      status: status || 'BACKLOG', // Default status is BACKLOG
+      teamId
+    }
+  })
+}
 
 /**
  * Update an existing task.
@@ -65,9 +64,9 @@ export const updateTask = async (
   id: string,
   userId: string,
   updates: Partial<{
-    title: string;
-    description: string;
-    status: string;
+    title: string
+    description: string
+    status: string
   }>
 ) => {
   return prisma.task.update({
@@ -76,14 +75,14 @@ export const updateTask = async (
       team: {
         members: {
           some: {
-            id: userId,
-          },
-        },
-      },
+            id: userId
+          }
+        }
+      }
     },
-    data: updates,
-  });
-};
+    data: updates
+  })
+}
 
 /**
  * Delete a task.
@@ -98,10 +97,10 @@ export const deleteTask = async (id: string, userId: string) => {
       team: {
         members: {
           some: {
-            id: userId,
-          },
-        },
-      },
-    },
-  });
-};
+            id: userId
+          }
+        }
+      }
+    }
+  })
+}
