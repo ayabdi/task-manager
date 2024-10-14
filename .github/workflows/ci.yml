@@ -80,12 +80,9 @@ jobs:
         run: npm run test
 
       - name: Run Cypress E2E Tests
-        uses: cypress-io/github-action@v5
-        with:
-          wait-on: 'http://localhost:3000'
-          wait-on-timeout: 120
-          browser: chrome
-          config-file: cypress.config.ts
+        run: npx cypress run --config-file cypress.config.ts
+        env:
+          CYPRESS_BASE_URL: http://localhost:3000
 
       - name: Stop and Remove Application Container
         if: always()
