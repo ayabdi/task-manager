@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "node src/server.js",
+    "start": "NODE_ENV=production node src/server.js",
     "build": "npx prisma generate && next build",
-    "start": "next start -p 3000",
     "lint": "next lint",
     "test": "jest --ci",
     "test:watch": "jest --watch",
