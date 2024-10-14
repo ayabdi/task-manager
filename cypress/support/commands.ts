@@ -59,10 +59,7 @@ Cypress.Commands.add('login', () => {
 })
 
 Cypress.Commands.add('sendSocketMessage', (roomId, message) => {
-  // Access your WebSocket server instance and send a message
-  // This requires your server to be accessible from the test environment
-  // Example:
-  const socket = io('http://localhost:3000') // Replace with your server URL
+  const socket = io(process.env.CYPRESS_BASE_URL)
 
   socket.on('connect', () => {
     console.log('Connected to WebSocket server')
