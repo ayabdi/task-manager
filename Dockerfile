@@ -11,8 +11,11 @@ COPY package*.json ./
 ENV NODE_ENV=production
 RUN npm ci
 
-# Copy the rest of the application code
-COPY . .
+# Copy node_modules and built application from the builder stage
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/prisma ./
 
 # Build the application (if needed)
 RUN npm run build
