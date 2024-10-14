@@ -2,7 +2,7 @@ import { useRouter } from 'next/navigation'
 import { useState, FormEvent } from 'react'
 import { signIn } from 'next-auth/react'
 import { toast } from 'react-toastify'
-;``
+
 // Custom hook for handling login functionality
 export const useLogin = () => {
   // State to hold form data
