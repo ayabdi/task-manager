@@ -6,6 +6,7 @@ import { CSS } from "@dnd-kit/utilities";
 import { useAppDispatch } from "@/store";
 import { setEditorState, Task } from "@/store/tasks";
 import Image from "next/image";
+import editicon from '@/app/icons/edit.svg'
 
 interface Props {
   task?: Task;
@@ -74,7 +75,7 @@ function TaskCard({ task }: Props) {
 
         <div className="flex ml-auto gap-1">
           <Image
-            src="/icons/edit.svg"
+            src={editicon}
             alt="edit"
             height={4}
             width={4}

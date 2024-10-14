@@ -2,6 +2,7 @@ import TeamForm from "@/app/components/team/TeamForm";
 import { getTeams } from "@/services/teamService";
 import { getDictionary } from "../dictonaries";
 import Image from "next/image";
+import logo from '@/app/icons/logo.svg'
 
 export default async function TeamsPage({ params: { lang } }: { params: { lang: string } }) {
   const teams = await getTeams();
@@ -12,7 +13,7 @@ export default async function TeamsPage({ params: { lang } }: { params: { lang: 
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <Image
           alt="Your Company"
-          src="/icons/logo.svg"
+          src={logo}
           className="mx-auto h-14 w-auto"
           width={56}
           height={56}

@@ -1,6 +1,7 @@
 import SignUpForm from '@/app/components/signup/SignUpForm'
 import { getDictionary } from '../dictonaries'
 import Image from 'next/image'
+import logo from '@/app/icons/logo.svg'
 
 export default async function SignUpPage({ params: { lang } }: { params: { lang: string } }) {
   const dict = await getDictionary(lang)
@@ -10,7 +11,7 @@ export default async function SignUpPage({ params: { lang } }: { params: { lang:
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <Image
           alt="Your Company"
-          src="/icons/logo.svg"
+          src={logo}
           className="mx-auto h-14 w-auto"
           width={56}
           height={56}
