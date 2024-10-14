@@ -4,6 +4,12 @@
 
 This project is a **real-time, collaborative task management tool** developed using **Next.js**. It showcases full-stack development capabilities, including scalable architecture design, front-end and back-end development, secure authentication, effective state management, localization, testing, and smooth, visually engaging UI with complex animations.
 
+## Project Demonstration
+
+- **Live Demo**: [Deployed Application Link](https://task-manager-production-7107.up.railway.app/) 
+- **Video Walkthrough**: [Loom Video](https://www.loom.com/share/33c8ad3d774a489687d4830d4699a171?sid=e25f3bd2-3cd0-4bfe-8886-e09a58341418)
+
+
 ## Features
 
 - **Real-Time Collaboration**: Utilizes **Socket.io** to provide real-time updates and communication between clients, ensuring that all users see changes instantaneously without needing to refresh.
@@ -33,7 +39,7 @@ This project is a **real-time, collaborative task management tool** developed us
 - **Testing Frameworks**: [Jest](https://jestjs.io/) and [Cypress](https://www.cypress.io/)
 - **CI/CD Pipeline**: Configured with Github Actions
 - **Containerization**: [Docker](https://www.docker.com/)
-- **AI Tooling**: [Cursor IDE](https://www.cursor.com), OpenAI o1, o1-mini, gpt-4o
+- **AI Tooling**: [Cursor IDE](https://www.cursor.com)  [OpenAI](https://openai.com) o1, o1-mini, gpt-4o
 
 ## Project Structure
 
@@ -170,12 +176,6 @@ The project follows **Clean Architecture** principles, organized into the follow
 
   - The codebase follows best practices and is thoroughly commented for readability.
   - **ESLint** and **Prettier** are used to maintain code consistency and style.
-
-## Project Demonstration
-
-- **Live Demo**: [Deployed Application Link](https://task-manager-production-7107.up.railway.app/) 
-- **Video Walkthrough**: [Loom Video](https://www.loom.com/share/33c8ad3d774a489687d4830d4699a171?sid=e25f3bd2-3cd0-4bfe-8886-e09a58341418)
-
 
 
 ## Conclusion
