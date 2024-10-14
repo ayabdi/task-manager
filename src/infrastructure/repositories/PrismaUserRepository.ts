@@ -49,7 +49,11 @@ export class PrismaUserRepository implements IUserRepository {
         name: user.name,
         email: user.email,
         password: user.password,
-        teamId: user.teamId,
+        Team: {
+          create: {
+            name: `${user.name}'s Team`
+          }
+        }
       },
     });
 
