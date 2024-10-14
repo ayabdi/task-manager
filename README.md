@@ -424,4 +424,4 @@ This project demonstrates the ability to build a complex, full-stack application
 
 ---
 
-Thank you for reviewing this project. Your feedback is greatly appreciated!
+Thank you for reviewing this project. Looking forward to hearing back!
