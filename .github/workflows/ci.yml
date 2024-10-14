@@ -27,7 +27,6 @@ jobs:
 
     env:
       DATABASE_URL: postgresql://postgres:postgres@localhost:5432/tasks_db
-      NODE_ENV: production
 
     steps:
       - name: Checkout Repository
@@ -41,9 +40,6 @@ jobs:
 
       - name: Install Dependencies
         run: npm ci
-
-      - name: Generate Prisma Client
-        run: npx prisma generate
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
@@ -82,7 +78,8 @@ jobs:
           done
 
       - name: Run Jest Unit Tests
-        run: npm run test
+        run: |
+          NODE_ENV=test npm run test
 
       - name: Run Cypress E2E Tests
         uses: cypress-io/github-action@v5
