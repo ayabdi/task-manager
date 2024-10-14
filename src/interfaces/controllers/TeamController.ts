@@ -2,7 +2,7 @@ import { CreateTeamUseCase } from '@/application/useCases/team/CreateTeamUseCase
 import { AssignUserToTeamUseCase } from '@/application/useCases/team/AssignUserToTeamUseCase';
 import { PrismaTeamRepository } from '../../infrastructure/repositories/PrismaTeamRepository';
 import { getServerSession } from 'next-auth/next';
-import { authOptions } from '../../app/api/auth/[...nextauth]/route';
+import { authOptions } from '../../app/api/auth/[...nextauth]/authOptions';
 
 export class TeamController {
   /**

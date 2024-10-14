@@ -1,0 +1,104 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "main", "develop" ]
+  pull_request:
+    branches: [ "main", "develop" ]
+
+jobs:
+  build-test-and-deploy:
+    runs-on: ubuntu-latest
+
+    services:
+      db:
+        image: postgres:13
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: tasks_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/tasks_db
+      NODE_ENV: production
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: true
+          tags: yourdockerhubusername/your-repo-name:latest
+
+      - name: Run Database Migrations
+        run: |
+          docker run --rm \
+            --network host \
+            -e DATABASE_URL=$DATABASE_URL \
+            yourdockerhubusername/your-repo-name:latest \
+            npx prisma migrate deploy
+
+      - name: Start Application Container
+        run: |
+          docker run -d \
+            --name tasks_container \
+            --network host \
+            -e DATABASE_URL=$DATABASE_URL \
+            -e NODE_ENV=production \
+            -p 3000:3000 \
+            yourdockerhubusername/your-repo-name:latest
+
+      - name: Wait for Application to be Ready
+        run: |
+          for i in {1..10}; do
+            if nc -z localhost 3000; then
+              echo "Application is up!"
+              break
+            else
+              echo "Waiting for application..."
+              sleep 5
+            fi
+          done
+
+      - name: Run Jest Unit Tests
+        run: npm run test
+
+      - name: Run Cypress E2E Tests
+        uses: cypress-io/github-action@v5
+        with:
+          start: echo 'Application is running in Docker container.'
+          wait-on: 'http://localhost:3000'
+          wait-on-timeout: 60
+          browser: chrome
+          config-file: cypress.config.js
+
+      - name: Stop and Remove Application Container
+        if: always()
+        run: |
+          docker stop tasks_container
+          docker rm tasks_container

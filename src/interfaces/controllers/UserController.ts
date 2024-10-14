@@ -1,7 +1,7 @@
 import { PrismaUserRepository } from '@/infrastructure/repositories/PrismaUserRepository'
 import { UserRegistrationUseCase } from '@/application/useCases/user/UserRegistrationUseCase'
 import { getServerSession } from 'next-auth/next'
-import { authOptions } from '@/app/api/auth/[...nextauth]/route'
+import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions'
 import { GetUserUseCase } from '@/application/useCases/user/GetUserUseCase'
 
 /**
@@ -13,7 +13,7 @@ export class UserController {
    * @param req The incoming HTTP request.
    * @returns A Response object with the user's info or an error message.
    */
-  static async getUser(req: Request): Promise<Response> {
+  static async getUser(): Promise<Response> {
     try {
       const session = await getServerSession(authOptions)
 
@@ -30,8 +30,11 @@ export class UserController {
       const user = await getUserUseCase.execute(session.userId)
 
       // Return the user information (excluding password)
-      const { password: _, ...userWithoutPassword } = user
-
+      const userWithoutPassword = {
+        name: user.name,
+        email: user.email,
+        teamId: user.teamId
+      }
       return new Response(JSON.stringify(userWithoutPassword), { status: 200 })
     } catch (error: any) {
       // Handle any errors and return a 500 status code
@@ -57,7 +60,11 @@ export class UserController {
       const user = await userRegistrationUseCase.execute({ name, email, password })
 
       // Return the created user (excluding password)
-      const { password: _, ...userWithoutPassword } = user
+      const userWithoutPassword = {
+        name: user.name,
+        email: user.email,
+        teamId: user.teamId
+      }
 
       return new Response(JSON.stringify(userWithoutPassword), { status: 201 })
     } catch (error: any) {

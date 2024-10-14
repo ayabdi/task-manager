@@ -66,7 +66,7 @@ export const useTaskEditor = () => {
       setIsDeleting(true);
       await emitDeleteTask(taskId);
       close();
-    } catch (error) {
+    } catch{
       // Handle error if needed
     } finally {
       setIsDeleting(false);
@@ -85,7 +85,7 @@ export const useTaskEditor = () => {
         description: selectedTask?.description || "",
       });
     }
-  }, [editorState.selectedTask, editorState.status]);
+  }, [editorState]);
 
   // Return values and functions for the task editor
   return {

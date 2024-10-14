@@ -1,5 +1,4 @@
 import prisma from '@/infrastructure/prisma/client'
-import { PrismaClient } from '@prisma/client'
 
 /**
  * Fetch tasks for a specific user.

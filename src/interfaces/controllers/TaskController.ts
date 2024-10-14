@@ -4,7 +4,7 @@ import { GetTasksUseCase } from '../../application/useCases/task/GetTasksUseCase
 import { UpdateTaskUseCase } from '../../application/useCases/task/UpdateTaskUseCase'
 import { DeleteTaskUseCase } from '../../application/useCases/task/DeleteTaskUseCase'
 import { getServerSession } from 'next-auth/next'
-import { authOptions } from '../../app/api/auth/[...nextauth]/route'
+import { authOptions } from '../../app/api/auth/[...nextauth]/authOptions'
 import { TaskStatus } from '../../domain/entities/Task'
 import { fetchUserRecord } from '@/services/userService'
 
@@ -61,7 +61,7 @@ export class TaskController {
    * @param req The incoming HTTP request.
    * @returns A Response object with the list of tasks or an error message.
    */
-  static async getTasks(req: Request): Promise<Response> {
+  static async getTasks(): Promise<Response> {
     try {
       // Get the current user session
       const session = await getServerSession(authOptions)
@@ -132,7 +132,7 @@ export class TaskController {
    * @param id The ID of the task to delete.
    * @returns A Response object with status 204 on success or an error message.
    */
-  static async deleteTask(req: Request, id: string): Promise<Response> {
+  static async deleteTask(_: Request, id: string): Promise<Response> {
     try {
       // Get the current user session
       const session = await getServerSession(authOptions)

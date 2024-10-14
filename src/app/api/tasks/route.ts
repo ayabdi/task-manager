@@ -5,8 +5,8 @@ import { TaskController } from "@/interfaces/controllers/TaskController"
  * @param req The incoming HTTP request.
  * @returns A Response object with the list of tasks or an error message.
  */
-export async function GET(req: Request) {
-  return TaskController.getTasks(req)
+export async function GET() {
+  return TaskController.getTasks()
 }
 
 /**

@@ -1,7 +1,7 @@
 import { fetchUserRecord } from "@/services/userService";
 
 // Handles GET requests to fetch user information
-export async function GET(req: Request) {
+export async function GET() {
   // Fetch the user record from the service
   const userRecord = await fetchUserRecord();
 
