@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react'
-import { useTaskProvider } from "@/providers/tasks-provider";
+import { useTaskProvider } from "@/app/providers/tasks-provider";
 import { signOut } from "next-auth/react";
 
 const Header = () => {
