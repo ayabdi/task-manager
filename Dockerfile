@@ -25,7 +25,7 @@
    COPY --from=builder /app/node_modules ./node_modules
    COPY --from=builder /app/.next ./.next
    COPY --from=builder /app/package*.json ./
-   COPY --from=builder /app/schema.prisma ./  # Ensure schema.prisma is copied
+   COPY --from=builder /app/prisma ./
 
    # Expose the port your app runs on
    EXPOSE 3000
