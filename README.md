@@ -49,7 +49,8 @@ The project follows **Clean Architecture** principles, organized into the follow
    - **Purpose**: Contains the business logic and domain entities that represent the core concepts of the application.
    - **Content**:
      - **Entities**: Core business objects like `User`, `Task`, `Team`.
-     - **Enums and Types**: Definitions of status codes, roles, and other constants.
+     - **Repositories**: Interface definitions for data access, e.g., `IUserRepository`, `ITaskRepository`, `ITeamRepository`.
+
 
 2. ### **Application Layer**
 
@@ -86,40 +87,42 @@ The project follows **Clean Architecture** principles, organized into the follow
 
 ```
 ├── src
-│   ├── app
-│   │   ├── api
-│   │   │   └── auth
-│   │   │       └── [...nextauth]
-│   │   │           └── authOptions.ts   // NextAuth configuration
-│   │   ├── components                   // React components
-│   │   ├── hooks                        // Custom React hooks
-│   │   ├── pages                        // Next.js pages
-│   │   ├── providers                    // Context providers
-│   │   ├── store                        // Redux store setup
-│   │   └── types                        // Custom TypeScript types
-│   ├── application
-│   │   └── useCases                     // Application use cases
-│   ├── domain
-│   │   ├── entities                     // Domain entities
-│   │   └── enums                        // Enums and constants
-│   ├── infrastructure
-│   │   ├── prisma
-│   │   │   ├── client.ts                // Prisma client setup
-│   │   │   └── schema.prisma            // Prisma schema
-│   │   └── repositories                 // Data access implementations
-│   ├── interfaces
-│   │   └── controllers                  // Controllers for API endpoints
-│   └── services                         // Business logic services
-├── cypress                              // Cypress end-to-end tests
-├── prisma                               // Prisma migrations
-├── public                               // Static assets
+│ ├── app
+│ │ ├── api
+│ │ │ └── auth
+│ │ │ └── [...nextauth]
+│ │ │ └── authOptions.ts // NextAuth configuration
+│ │ ├── components // React components
+│ │ ├── hooks // Custom React hooks
+│ │ ├── pages // Next.js pages
+│ │ ├── providers // Context providers
+│ │ ├── store // Redux store setup
+│ │ └── types // Custom TypeScript types
+│ ├── application
+│ │ ├── useCases // Application use cases
+│ │ └── services // Business logic services
+│ ├── domain
+│ │ ├── entities // Domain entities (User, Task, Team)
+│ │ ├── repositories // Repository interfaces
+│ │ 
+│ ├── infrastructure
+│ │ ├── prisma
+│ │ │ ├── client.ts // Prisma client setup
+│ │ │ └── schema.prisma // Prisma schema
+│ │ └── repositories // Data access implementations
+│ ├── interfaces
+│ │ └── controllers // Controllers for API endpoints
+│ └── server.ts // Server entry point with Socket.io setup
+├── cypress // Cypress end-to-end tests
+├── prisma // Prisma migrations
+├── public // Static assets
 ├── .github
-│   └── workflows
-│       └── ci.yml                       // GitHub Actions CI/CD pipeline
-├── Dockerfile                           // Docker configuration
-├── package.json                         // NPM scripts and dependencies
-├── tsconfig.json                        // TypeScript configuration
-└── README.md                            // Project documentation
+│ └── workflows
+│ └── ci.yml // GitHub Actions CI/CD pipeline
+├── Dockerfile // Docker configuration
+├── package.json // NPM scripts and dependencies
+├── tsconfig.json // TypeScript configuration
+└── README.md // Project documentation
 ```
 
 ## Live Collaboration Details
