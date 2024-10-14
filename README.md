@@ -31,8 +31,7 @@ This project is a **real-time, collaborative task management tool** developed us
 - **State Management**: [Redux Toolkit](https://redux-toolkit.js.org/)
 - **Database**: [Prisma ORM](https://www.prisma.io/) (connected to your choice of database, e.g., PostgreSQL)
 - **Testing Frameworks**: [Jest](https://jestjs.io/) and [Cypress](https://www.cypress.io/)
-- **Localization**: [i18next](https://www.i18next.com/) and [next-i18next](https://github.com/i18next/next-i18next)
-- **CI/CD Pipeline**: Configured with (e.g., GitHub Actions, GitLab CI/CD)
+- **CI/CD Pipeline**: Configured with Github Actions
 - **Containerization**: [Docker](https://www.docker.com/)
 
 ## Project Structure
@@ -58,7 +57,7 @@ The project follows **Clean Architecture** principles, organized into the follow
 1. **Clone the Repository**
 
    ```bash
-   git clone https://github.com/yourusername/your-repository.git
+   git clone https://github.com/ayabdi/task-manager.git
    cd your-repository
    ```
 
@@ -107,7 +106,7 @@ The project follows **Clean Architecture** principles, organized into the follow
 - **Run End-to-End Tests**
 
   ```bash
-  npx cypress open
+  npx cypress run
   ```
 
   This will open the Cypress test runner where you can execute the E2E tests.
@@ -119,8 +118,8 @@ The project follows **Clean Architecture** principles, organized into the follow
   Build and run the Docker container:
 
   ```bash
-  docker build -t collaborative-task-manager .
-  docker run -p 3000:3000 collaborative-task-manager
+  docker build -t task-manager .
+  docker run -p 3000:3000 task-manager
   ```
 
 - **CI/CD Pipeline**
@@ -159,7 +158,7 @@ The project follows **Clean Architecture** principles, organized into the follow
 - **Unit Testing**
 
   - Backend services and use cases are tested using **Jest**.
-  - Tests cover key functionalities and edge cases.
+  - Tests cover key backend functionalities and edge cases.
 
 - **End-to-End Testing**
 
@@ -173,18 +172,10 @@ The project follows **Clean Architecture** principles, organized into the follow
 
 ## Project Demonstration
 
-- **Live Demo**: [Deployed Application Link](http://your-deployed-app-link.com) (replace with your actual link)
+- **Live Demo**: [Deployed Application Link](https://task-manager-production-7107.up.railway.app/) (replace with your actual link)
 - **Video Walkthrough**: [YouTube Video](http://youtube.com/your-demo-video) (replace with your actual link)
 
-## Repository
 
-- **GitHub**: [https://github.com/yourusername/your-repository](https://github.com/yourusername/your-repository) (replace with your actual repository link)
-
-## Contact
-
-For any inquiries or feedback, please contact:
-
-- **Email**: [team@unicodesolutions.co](mailto:team@unicodesolutions.co)
 
 ## Conclusion
 
@@ -194,15 +185,10 @@ This project demonstrates the ability to build a complex, full-stack application
 - Developing real-time features with **Socket.io**.
 - Implementing secure authentication flows with **NextAuth**.
 - Managing state efficiently with **Redux Toolkit**.
-- Providing a multilingual user experience with **i18next**.
+- Providing a multilingual user experience in arabic and englis.
 - Writing comprehensive tests with **Jest** and **Cypress**.
 - Configuring CI/CD pipelines for automated testing and deployment.
 - Ensuring code quality and readability with clear comments and adherence to best practices.
 
----
-
-**Note**: Replace placeholder links and information with actual data relevant to your project before sharing.
-
----
 
 Thank you, and looking forward to your feedback!
