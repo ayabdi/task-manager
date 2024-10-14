@@ -9,22 +9,7 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
-
-    services:
-      db:
-        image: postgres:13
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: tasks_db
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
+    
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -41,34 +26,13 @@ jobs:
       - name: Generate Prisma Client
         run: npx prisma generate
 
-      - name: Build Docker Image
-        run: docker build -t task-manager:latest .
-
-      - name: Generate NEXTAUTH_SECRET
+      - name: Build and Start Services
         run: |
-          echo "NEXTAUTH_SECRET=$(openssl rand -hex 32)" >> $GITHUB_ENV
+          docker-compose up -d --build
 
       - name: Run Database Migrations
         run: |
-          docker run --rm \
-            --network github_network \
-            -e DATABASE_URL=postgresql://postgres:postgres@db:5432/tasks_db \
-            task-manager:latest \
-            npx prisma migrate deploy
-
-      - name: Start Application Container
-        env:
-          NEXTAUTH_SECRET: ${{ env.NEXTAUTH_SECRET }}
-        run: |
-          docker run -d \
-            --name tasks_container \
-            --network github_network \
-            -e DATABASE_URL=postgresql://postgres:postgres@db:5432/tasks_db \
-            -e NEXTAUTH_SECRET=${NEXTAUTH_SECRET} \
-            -e NEXTAUTH_URL=http://localhost:3000 \
-            -e NODE_ENV=production \
-            -p 3000:3000 \
-            task-manager:latest
+          docker-compose exec app npx prisma migrate deploy
 
       - name: Wait for Application to be Ready
         run: |
@@ -93,12 +57,6 @@ jobs:
           browser: chrome
           config-file: cypress.config.ts
 
-      - name: Dump Application Logs
-        if: failure()
-        run: docker logs tasks_container
-
-      - name: Stop and Remove Application Container
+      - name: Stop and Remove Services
         if: always()
-        run: |
-          docker stop tasks_container
-          docker rm tasks_container
+        run: docker-compose down
