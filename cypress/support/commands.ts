@@ -41,8 +41,8 @@ declare global {
 Cypress.Commands.add('login', () => {
   cy.url().then(url => {
     if (url.includes('/login')) {
-      cy.get('input[name="email"]').clear().type('test@test2.com')
-      cy.get('input[name="password"]').clear().type('A0d|N$308]Z#')
+      cy.get('input[name="email"]').clear().type('test@test.com')
+      cy.get('input[name="password"]').clear().type('Password123!')
 
       // Submit the login form
       cy.get('button[type="submit"]').click()
