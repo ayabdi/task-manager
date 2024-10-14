@@ -1,36 +1,46 @@
-   # Use the official Node.js 18 image as base
-   FROM node:18-alpine AS builder
+# Use the official Node.js 18 image as base
+FROM node:18-alpine AS builder
 
-   # Set working directory
-   WORKDIR /app
+# Install build tools
+RUN apk add --no-cache make gcc g++ python3
 
-   # Copy package.json and package-lock.json
-   COPY package*.json ./
+# Set working directory
+WORKDIR /app
 
-   # Install dependencies
-   RUN npm ci
+# Copy package.json and package-lock.json
+COPY package*.json ./
 
-   # Copy the rest of the application code
-   COPY . .
+# Install dependencies
+RUN npm ci
 
-   # Build the Next.js application
-   RUN npm run build
+# Copy the rest of the application code
+COPY . .
 
-   # Production stage
-   FROM node:18-alpine
+# Rebuild bcrypt for the correct architecture
+RUN npm rebuild bcrypt --build-from-source
 
-   WORKDIR /app
+# Build the Next.js application
+RUN npm run build
 
-   # Copy node_modules and built application from the builder stage
-   COPY --from=builder /app/node_modules ./node_modules
-   COPY --from=builder /app/.next ./.next
-   COPY --from=builder /app/package*.json ./
+# Production stage
+FROM node:18-alpine
 
-   # Expose the port your app runs on
-   EXPOSE 3000
+WORKDIR /app
 
-   # Set environment variable to production
-   ENV NODE_ENV=production
+# Copy node_modules and built application from the builder stage
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/src ./src
 
-   # Start the application
-   CMD ["npm", "run", "start"]
+# Install only production dependencies
+RUN npm ci --only=production
+
+# Expose the port your app runs on
+EXPOSE 3000
+
+# Set environment variable to production
+ENV NODE_ENV=production
+
+# Start the application
+CMD ["npm", "run", "start"]
