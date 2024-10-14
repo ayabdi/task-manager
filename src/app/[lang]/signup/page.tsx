@@ -10,7 +10,7 @@ export default async function SignUpPage({ params: { lang } }: { params: { lang:
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <Image
           alt="Your Company"
-          src="https://tailwindui.com/plus/img/logos/mark.svg?color=orange&shade=600"
+          src="/icons/logo.svg"
           className="mx-auto h-14 w-auto"
           width={56}
           height={56}

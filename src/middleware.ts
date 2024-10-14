@@ -20,7 +20,7 @@ export default withAuth(
   function middleware(request) {
     // Check if there is any supported locale in the pathname
     const { pathname } = request.nextUrl
-    if (pathname.startsWith('/api/')) return // Skip locale middleware for API routes
+    if (pathname.startsWith('/api/') || pathname.includes('.svg')) return // Skip locale middleware for API routes
 
     const pathnameHasLocale = locales.some(
       locale => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
@@ -45,7 +45,7 @@ export default withAuth(
         // Allow access if the path is /signup or /login, or if a token exists
         console.log('Authorizing', req.nextUrl.pathname)
         return req.nextUrl.pathname.includes('/signup') || req.nextUrl.pathname.includes('/login') ||
-        req.nextUrl.href.includes('.svg') || !!token
+        req.nextUrl.pathname.includes('.svg') || !!token
       }
     }
   }
