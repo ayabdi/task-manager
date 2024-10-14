@@ -61,7 +61,7 @@ jobs:
           docker run --rm \
             --network host \
             -e DATABASE_URL=$DATABASE_URL \
-            yourdockerhubusername/task-manager:latest \
+            ghcr.io/${{ github.repository_owner }}/task-manager:latest \
             npx prisma migrate deploy
 
       - name: Start Application Container
@@ -72,7 +72,7 @@ jobs:
             -e DATABASE_URL=$DATABASE_URL \
             -e NODE_ENV=production \
             -p 3000:3000 \
-            yourdockerhubusername/task-manager:latest
+            ghcr.io/${{ github.repository_owner }}/task-manager:latest
 
       - name: Wait for Application to be Ready
         run: |
