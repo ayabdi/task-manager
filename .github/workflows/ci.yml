@@ -9,7 +9,25 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
-    
+
+    services:
+      db:
+        image: postgres:13
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: tasks_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/tasks_db
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -26,18 +44,30 @@ jobs:
       - name: Generate Prisma Client
         run: npx prisma generate
 
-      - name: Build and Start Services
-        run: |
-          docker-compose up -d --build
+      - name: Build Docker Image
+        run: docker build -t task-manager:latest .
 
       - name: Run Database Migrations
         run: |
-          docker-compose exec app npx prisma migrate deploy
+          docker run --rm \
+            --network host \
+            -e DATABASE_URL=$DATABASE_URL \
+            task-manager:latest \
+            npx prisma migrate deploy
+
+      - name: Start Application Container
+        run: |
+          docker run -d \
+            --name tasks_container \
+            -e DATABASE_URL=$DATABASE_URL \
+            -e NODE_ENV=production \
+            -p 3000:3000 \
+            task-manager:latest
 
       - name: Wait for Application to be Ready
         run: |
-          for i in {1..24}; do
-            if curl -sf http://localhost:3000/health; then
+          for i in {1..12}; do
+            if nc -z localhost 3000; then
               echo "Application is up!"
               break
             else
@@ -50,13 +80,12 @@ jobs:
         run: npm run test
 
       - name: Run Cypress E2E Tests
-        uses: cypress-io/github-action@v5
-        with:
-          wait-on: 'http://localhost:3000/signup'
-          wait-on-timeout: 120
-          browser: chrome
-          config-file: cypress.config.ts
+        run: npx cypress run --config-file cypress.config.ts
+        env:
+          CYPRESS_BASE_URL: https://task-manager-production-7107.up.railway.app
 
-      - name: Stop and Remove Services
+      - name: Stop and Remove Application Container
         if: always()
-        run: docker-compose down
+        run: |
+          docker stop tasks_container
+          docker rm tasks_container
