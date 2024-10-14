@@ -1,4 +1,4 @@
-import SignUpForm from '@/components/signup/SignUpForm'
+import SignUpForm from '@/app/components/signup/SignUpForm'
 import { getDictionary } from '../dictonaries'
 
 export default async function SignUpPage({ params: { lang } }: { params: { lang: string } }) {

@@ -1,45 +1,24 @@
-import {
-  updateTask,
-  deleteTask
-} from "@/services/taskService";
-import { getServerSession } from "next-auth";
-import { authOptions } from "../../auth/[...nextauth]/route";
+import { TaskController } from '@/interfaces/controllers/TaskController'
 
-// Handle PUT requests to update a task
+/**
+ * Handles PUT requests to update an existing task.
+ * @param req The incoming HTTP request.
+ * @returns A Response object with the updated task or an error message.
+ */
 export async function PUT(req: Request) {
-    const session = await getServerSession(authOptions); // Get the current session
-    const url = new URL(req.url);
-    const id = url.pathname.split("/").pop(); // Extracting the task ID from the URL
-    const updates = await req.json(); // Parse the request body for updates
+  const url = new URL(req.url)
+  const id = url.pathname.split('/').pop() // Extracting the id from the URL
 
-    // Validate task ID
-    if (!id) {
-      return Response.json({ error: "Task Id is required" }, { status: 400 });
-    }
-
-    try {
-      const updatedTask = await updateTask(id, session!.userId, updates); // Update the task
-      return Response.json(updatedTask); // Return the updated task
-    } catch (error) {
-      return Response.json(error); // Handle errors
-    }
+  return TaskController.updateTask(req, id!)
 }
 
-// Handle DELETE requests to remove a task
+/**
+ * Handles DELETE requests to delete an existing task.
+ * @param req The incoming HTTP request.
+ * @returns A Response object with status 204 on success or an error message.
+ */
 export async function DELETE(req: Request) {
-  const session = await getServerSession(authOptions); // Get the current session
-  const url = new URL(req.url);
-  const id = url.pathname.split("/").pop(); // Extracting the task ID from the URL
-
-  // Validate task ID
-  if (!id) {
-    return Response.json({ error: "Task Id is required" }, { status: 400 });
-  }
-
-  try {
-    await deleteTask(id, session!.userId); // Delete the task
-    return Response.json({ message: "Task deleted successfully" }); // Confirm deletion
-  } catch (error) {
-    return Response.json(error); // Handle errors
-  }
+  const url = new URL(req.url)
+  const id = url.pathname.split('/').pop() // Extracting the id from the URL
+  return TaskController.deleteTask(req, id!)
 }

@@ -1,4 +1,4 @@
-import LoginForm from '@/components/login/LoginForm'
+import LoginForm from '@/app/components/login/LoginForm'
 import { getDictionary } from '../dictonaries'
 
 export default async function LoginPage({ params: { lang } }: { params: { lang: string } }) {

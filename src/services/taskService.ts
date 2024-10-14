@@ -1,4 +1,4 @@
-import prisma from '@/prisma/client'
+import prisma from '@/infrastructure/prisma/client'
 import { PrismaClient } from '@prisma/client'
 
 /**

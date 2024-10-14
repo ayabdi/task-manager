@@ -11,8 +11,7 @@ export const authOptions: AuthOptions = {
       credentials: {
         email: {
           label: "Email",
-          type: "email",
-          placeholder: "jsmith@example.com",
+          type: "email"
         },
         password: { label: "Password", type: "password" },
       },
@@ -48,7 +47,6 @@ export const authOptions: AuthOptions = {
             email: user.email,
           };
         } catch (error) {
-          console.log({ error }); // Log any errors
           return null; // Return null on error
         }
       },

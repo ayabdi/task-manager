@@ -1,4 +1,4 @@
-import TeamForm from "@/components/team/TeamForm";
+import TeamForm from "@/app/components/team/TeamForm";
 import { getTeams } from "@/services/teamService";
 import { getDictionary } from "../dictonaries";
 

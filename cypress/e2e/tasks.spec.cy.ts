@@ -1,7 +1,7 @@
 // cypress/integration/tasks.spec.js
 describe('Task Management', () => {
   beforeEach(() => {
-    // Visit the task management page
+    // Visit the tasks
     cy.visit('http://localhost:3000/tasks')
     cy.login()
   })
@@ -26,9 +26,8 @@ describe('WebSocket Real-Time Updates', () => {
 
   beforeEach(() => {
     // Log in and visit the tasks page
-    // Visit the task management page
     cy.visit('http://localhost:3000/tasks')
-    cy.login() // Assume you have a custom command for logging in
+    cy.login()
   })
 
   it('should update the UI when a task is updated via WebSocket',() => {

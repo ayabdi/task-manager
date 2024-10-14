@@ -1,5 +1,5 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
-import prisma from '@/prisma/client'
+import prisma from '@/infrastructure/prisma/client'
 import { PrismaClient } from '@prisma/client'
 import bcrypt from 'bcrypt'
 import { Session } from 'next-auth'
