@@ -1,19 +1,19 @@
 import TeamForm from "@/app/components/team/TeamForm";
 import { getTeams } from "@/services/teamService";
 import { getDictionary } from "../dictonaries";
-import Image from "next/image";
-import logo from '@/app/icons/logo.svg'
+import { fetchUserRecord } from "@/services/userService";
 
 export default async function TeamsPage({ params: { lang } }: { params: { lang: string } }) {
   const teams = await getTeams();
+  const user = await fetchUserRecord()
   const dict = await getDictionary(lang)
 
   return (
     <div className="flex min-h-[80vh] flex-1 flex-col justify-center px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-        <Image
+        <img
           alt="Your Company"
-          src={logo}
+          src="/icons/logo.svg"
           className="mx-auto h-14 w-auto"
           width={56}
           height={56}
@@ -23,7 +23,7 @@ export default async function TeamsPage({ params: { lang } }: { params: { lang: 
         </h2>
       </div>
 
-      <TeamForm teams={teams} dict={dict.team} />
+      <TeamForm teams={teams} dict={dict.team} user={user} />
     </div>
   );
 }

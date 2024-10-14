@@ -6,8 +6,6 @@ import Drawer from "../Drawer";
 import ListBox from "../ListBox";
 import Modal from "../Modal";
 import Input from "../Input";
-import Image from "next/image";
-import deleteicon from '@/app/icons/Trash.svg'
 import { useTaskProvider } from "@/providers/tasks-provider";
 
 const TaskEditor = () => {
@@ -33,8 +31,8 @@ const TaskEditor = () => {
       title={selectedTask ? dict.editTask : dict.createTask}
     >
       {selectedTask && (
-        <Image
-          src={deleteicon}
+        <img
+          src="/icons/Trash.svg"
           alt="delete"
           className="absolute h-5 w-5 right-6 -top-12 cursor-pointer"
           width={5}
