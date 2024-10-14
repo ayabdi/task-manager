@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Team } from '@prisma/client'
 import { User } from '@/domain/entities/User'
+import { toast } from 'react-toastify'
 
 // Custom hook for managing team selection and submission
 const useTeamForm = (teams: Team[], user: User) => {
@@ -38,8 +39,8 @@ const useTeamForm = (teams: Team[], user: User) => {
       }
 
       router.push('/tasks') // Redirect to tasks page on success
-    } catch (error) {
-      console.error(error) // Log any errors
+    } catch (data: any) {
+      toast.error(data.error)
     } finally {
       setLoading(false) // Reset loading state
     }

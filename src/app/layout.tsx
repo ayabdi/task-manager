@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import './globals.css'
 import ReduxProvider from './providers/redux-provider'
 import LanguageSelect from '@/app/components/LanguageSelect'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -17,7 +19,9 @@ export default function RootLayout({
     <html>
       <body className={`antialiased`}>
         <LanguageSelect/>
+        
         <ReduxProvider>{children}</ReduxProvider>
+        <ToastContainer position="top-right" className="z-[1000000]" closeOnClick={false} />
       </body>
     </html>
   )

@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
+import { toast } from 'react-toastify'
 
 // Define possible task statuses
 export type TaskStatus = 'BACKLOG' | 'TODO' | 'IN PROGRESS' | 'DONE'
@@ -31,28 +32,44 @@ interface TasksState {
 
 // Async thunk for adding a task
 export const addTaskAsync = createAsyncThunk('tasks/addTask', async (task: Omit<Task, 'id'>) => {
-  const response = await axios.post('/api/tasks', task)
-  return response.data // Return created task
+  try {
+    const response = await axios.post('/api/tasks', task)
+    return response.data // Return created task
+  } catch (error) {
+    toast.error('Failed to add task. Please try again.') // Report error
+    throw error // Re-throw error to handle it in the calling code
+  }
 })
 
 // Async thunk for updating a task
 export const updateTaskAsync = createAsyncThunk(
   'tasks/updateTask',
   async ({ id, body }: { id: string; body: Partial<Task> }) => {
-    const response = await axios.put(`/api/tasks/${id}`, body, {
-      headers: {
-        'Content-Type': 'application/json' // Set content type
-      }
-    })
-    return response.data // Return updated task
+    try {
+      const response = await axios.put(`/api/tasks/${id}`, body, {
+        headers: {
+          'Content-Type': 'application/json' // Set content type
+        }
+      })
+      return response.data // Return updated task
+    } catch (error) {
+      toast.error('Failed to update task. Please try again.') // Report error
+      throw error // Re-throw error to handle it in the calling code
+    }
   }
 )
 
 // Async thunk for deleting a task
 export const deleteTaskAsync = createAsyncThunk('tasks/deleteTask', async (id: string) => {
-  await axios.delete(`/api/tasks/${id}`)
-  return id // Return the id of the deleted task
+  try {
+    await axios.delete(`/api/tasks/${id}`)
+    return id // Return the id of the deleted task
+  } catch (error) {
+    toast.error('Failed to delete task. Please try again.') // Report error
+    throw error // Re-throw error to handle it in the calling code
+  }
 })
+
 
 // Initial state for tasks
 const initialState: TasksState = {
