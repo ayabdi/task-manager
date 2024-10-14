@@ -3,8 +3,8 @@
 import React from 'react'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import { useAppDispatch } from '@/store'
-import { setEditorState, Task } from '@/store/tasks'
+import { useAppDispatch } from '@/app/store'
+import { setEditorState, Task } from '@/app/store/tasks'
 
 interface Props {
   task?: Task

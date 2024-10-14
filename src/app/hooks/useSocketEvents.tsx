@@ -3,11 +3,11 @@ import {
   addTaskAsync,
   updateTaskAsync,
   deleteTaskAsync,
-} from "@/store/tasks"; // Import Redux actions for task management
+} from "@/app/store/tasks"; // Import Redux actions for task management
 
-import { AppDispatch } from "@/store";
-import { useSocket } from "@/providers/socket-provider";
-import { useTaskProvider } from "@/providers/tasks-provider";
+import { AppDispatch } from "@/app/store";
+import { useSocket } from "@/app/providers/socket-provider";
+import { useTaskProvider } from "@/app/providers/tasks-provider";
 
 const useSocketEvents = () => {
   const socket = useSocket(); // Initialize socket connection

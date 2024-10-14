@@ -1,7 +1,7 @@
 'use client'
 
 // Import necessary modules and types
-import { setTasks, Task } from '@/store/tasks'
+import { setTasks, Task } from '@/app/store/tasks'
 import React, { createContext, useContext, useEffect } from 'react';
 import { useDispatch } from 'react-redux'
 

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import './globals.css'
-import ReduxProvider from '../providers/redux-provider'
+import ReduxProvider from './providers/redux-provider'
 import LanguageSelect from '@/app/components/LanguageSelect'
 
 export const metadata: Metadata = {

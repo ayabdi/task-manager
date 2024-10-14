@@ -9,7 +9,7 @@ import ColumnContainer from './ColumnContainer'
 
 import TaskCard from './TaskCard'
 import { useTasks } from '@/app/hooks/useTasks'
-import { Task } from '@/store/tasks'
+import { Task } from '@/app/store/tasks'
 
 export interface ColumnType {
   name: string

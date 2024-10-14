@@ -6,7 +6,7 @@ import Drawer from "../Drawer";
 import ListBox from "../ListBox";
 import Modal from "../Modal";
 import Input from "../Input";
-import { useTaskProvider } from "@/providers/tasks-provider";
+import { useTaskProvider } from "@/app/providers/tasks-provider";
 
 const TaskEditor = () => {
   const {

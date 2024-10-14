@@ -1,8 +1,8 @@
 "use client";
 
 // Import necessary modules and types
-import { AppDispatch } from "@/store";
-import { addTask, deleteTask, updateTask } from "@/store/tasks";
+import { AppDispatch } from "@/app/store";
+import { addTask, deleteTask, updateTask } from "@/app/store/tasks";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { io, Socket } from "socket.io-client";

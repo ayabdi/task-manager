@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/store";
+import { AppDispatch, RootState } from "@/app/store";
 import {
   resetEditorState,
   setEditorState,
   Task,
-} from "@/store/tasks";
+} from "@/app/store/tasks";
 import useSocketEvents from "./useSocketEvents";
 
 // Custom hook for managing task editor state

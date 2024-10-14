@@ -3,9 +3,9 @@ import { SortableContext, useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { useMemo } from 'react'
 import TaskCard from './TaskCard'
-import { setEditorState, Task, TaskStatus } from '@/store/tasks'
-import { useAppDispatch } from '@/store'
-import { useTaskProvider } from '@/providers/tasks-provider'
+import { setEditorState, Task, TaskStatus } from '@/app/store/tasks'
+import { useAppDispatch } from '@/app/store'
+import { useTaskProvider } from '@/app/providers/tasks-provider'
 
 interface Props {
   column: string

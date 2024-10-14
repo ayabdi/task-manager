@@ -6,8 +6,8 @@ import {
   DragStartEvent,
 } from "@dnd-kit/core";
 import { useMemo, useState } from "react";
-import { AppDispatch, RootState } from "@/store";
-import { Task, TaskStatus, updateTask } from "@/store/tasks";
+import { AppDispatch, RootState } from "@/app/store";
+import { Task, TaskStatus, updateTask } from "@/app/store/tasks";
 import { useDispatch, useSelector } from "react-redux";
 import { ColumnType } from "@/app/components/tasks/TaskBoard";
 import useSocketEvents from "./useSocketEvents";
