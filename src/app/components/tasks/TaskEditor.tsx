@@ -33,7 +33,7 @@ const TaskEditor = () => {
     >
       {selectedTask && (
         <Image
-          src="../icons/Trash.svg"
+          src="/icons/Trash.svg"
           alt="delete"
           className="absolute h-5 w-5 right-6 -top-12 cursor-pointer"
           width={5}

@@ -50,6 +50,9 @@ export default withAuth(
   }
 )
 
-export const config = {
-  matcher: ['/[lang]/:path*', "/api/:path*" ]
-}
+
+  export const config = {
+    matcher: [
+      '/tasks/:path*', '/team/:path*','/api/:path'
+    ]
+  }

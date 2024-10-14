@@ -14,6 +14,8 @@ export default async function TeamsPage({ params: { lang } }: { params: { lang: 
           alt="Your Company"
           src="https://tailwindui.com/plus/img/logos/mark.svg?color=orange&shade=600"
           className="mx-auto h-14 w-auto"
+          width={56}
+          height={56}
         />
         <h2 className="mt-5 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
           {dict.team.header}

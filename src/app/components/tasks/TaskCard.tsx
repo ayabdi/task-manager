@@ -74,7 +74,7 @@ function TaskCard({ task }: Props) {
 
         <div className="flex ml-auto gap-1">
           <Image
-            src="../icons/edit.svg"
+            src="/icons/edit.svg"
             alt="edit"
             height={4}
             width={4}
