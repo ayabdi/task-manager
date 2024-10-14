@@ -25,9 +25,6 @@ jobs:
           --health-timeout 5s
           --health-retries 5
 
-    env:
-      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/tasks_db
-
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -47,27 +44,36 @@ jobs:
       - name: Build Docker Image
         run: docker build -t task-manager:latest .
 
+      - name: Generate NEXTAUTH_SECRET
+        run: |
+          echo "NEXTAUTH_SECRET=$(openssl rand -hex 32)" >> $GITHUB_ENV
+
       - name: Run Database Migrations
         run: |
           docker run --rm \
-            --network host \
-            -e DATABASE_URL=$DATABASE_URL \
+            --network github_network \
+            -e DATABASE_URL=postgresql://postgres:postgres@db:5432/tasks_db \
             task-manager:latest \
             npx prisma migrate deploy
 
       - name: Start Application Container
+        env:
+          NEXTAUTH_SECRET: ${{ env.NEXTAUTH_SECRET }}
         run: |
           docker run -d \
             --name tasks_container \
-            -e DATABASE_URL=$DATABASE_URL \
+            --network github_network \
+            -e DATABASE_URL=postgresql://postgres:postgres@db:5432/tasks_db \
+            -e NEXTAUTH_SECRET=${NEXTAUTH_SECRET} \
+            -e NEXTAUTH_URL=http://localhost:3000 \
             -e NODE_ENV=production \
             -p 3000:3000 \
             task-manager:latest
 
       - name: Wait for Application to be Ready
         run: |
-          for i in {1..12}; do
-            if nc -z localhost 3000; then
+          for i in {1..24}; do
+            if curl -sf http://localhost:3000/health; then
               echo "Application is up!"
               break
             else
@@ -80,9 +86,16 @@ jobs:
         run: npm run test
 
       - name: Run Cypress E2E Tests
-        run: npx cypress run --config-file cypress.config.ts
-        env:
-          CYPRESS_BASE_URL: http://localhost:3000
+        uses: cypress-io/github-action@v5
+        with:
+          wait-on: 'http://localhost:3000/signup'
+          wait-on-timeout: 120
+          browser: chrome
+          config-file: cypress.config.ts
+
+      - name: Dump Application Logs
+        if: failure()
+        run: docker logs tasks_container
 
       - name: Stop and Remove Application Container
         if: always()
