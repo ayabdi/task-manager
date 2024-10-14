@@ -59,7 +59,7 @@ Cypress.Commands.add('login', () => {
 })
 
 Cypress.Commands.add('sendSocketMessage', (roomId, message) => {
-  const socket = io(process.env.CYPRESS_BASE_URL)
+  const socket = io()
 
   socket.on('connect', () => {
     console.log('Connected to WebSocket server')

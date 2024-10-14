@@ -2,7 +2,7 @@
 describe('Task Management', () => {
   beforeEach(() => {
     // Visit the tasks
-    cy.visit(`${process.env.CYPRESS_BASE_URL}/tasks`)
+    cy.visit(`/tasks`)
     cy.login()
   })
 
@@ -26,7 +26,7 @@ describe('WebSocket Real-Time Updates', () => {
 
   beforeEach(() => {
     // Log in and visit the tasks page
-    cy.visit(`${process.env.CYPRESS_BASE_URL}/tasks`)
+    cy.visit(`/tasks`)
     cy.login()
   })
 

@@ -1,10 +1,12 @@
-import { TaskController } from '@/interfaces/controllers/TaskController'
+
+import { TaskController } from "../../../../interfaces/controllers/TaskController"
 
 /**
  * Handles PUT requests to update an existing task.
  * @param req The incoming HTTP request.
  * @returns A Response object with the updated task or an error message.
  */
+ 
 export async function PUT(req: Request) {
   const url = new URL(req.url)
   const id = url.pathname.split('/').pop() // Extracting the id from the URL

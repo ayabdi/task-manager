@@ -44,7 +44,8 @@ export default withAuth(
       authorized({ req, token }) {
         // Allow access if the path is /signup or /login, or if a token exists
         console.log('Authorizing', req.nextUrl.pathname)
-        return req.nextUrl.pathname.includes('/signup') || req.nextUrl.pathname.includes('/login') || !!token
+        return req.nextUrl.pathname.includes('/signup') || req.nextUrl.pathname.includes('/login') ||
+        req.nextUrl.href.includes('.svg') || !!token
       }
     }
   }
@@ -53,6 +54,6 @@ export default withAuth(
 
   export const config = {
     matcher: [
-      '/tasks/:path*', '/team/:path*','/api/:path'
+      '/:path*'
     ]
   }

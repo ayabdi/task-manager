@@ -1,11 +1,11 @@
 describe('User Signup', () => {
   beforeEach(() => {
     // Visit the signup page
-    cy.visit(`${process.env.CYPRESS_BASE_URL}/signup`)
+    cy.visit(`/signup`)
   })
 
   it('should allow a user to sign up', () => {
-    const randomEmail = `test@test.com`
+    const randomEmail = `user${Math.floor(Math.random() * 1000)}@example.com`
     const password = 'Password123!'
 
     // Fill out the signup form

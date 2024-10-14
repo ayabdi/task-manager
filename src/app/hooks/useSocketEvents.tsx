@@ -28,6 +28,7 @@ const useSocketEvents = () => {
 
   // Emit an event to add a new task
   const emitAddTask = async (task: any) => {
+    console.log({task, roomId})
     if (!roomId) throw new Error("No roomid"); // Ensure room ID is available
     const result = await dispatch(addTaskAsync(task)).unwrap();
     
