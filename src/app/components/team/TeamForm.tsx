@@ -6,9 +6,10 @@ import { Team } from '@prisma/client'
 import Button from '../Button'
 import useTeamForm from '@/app/hooks/useTeamForm'
 import ListBox from '../ListBox'
+import { User } from '@/domain/entities/User'
 
-const TeamForm = ({ teams, dict }: { teams: Team[]; dict: any }) => {
-  const { loading, onSubmit, selectedTeam, selectTeam } = useTeamForm(teams)
+const TeamForm = ({ teams, dict, user }: { teams: Team[]; dict: any, user: User }) => {
+  const { loading, onSubmit, selectedTeam, selectTeam } = useTeamForm(teams, user)
   return (
     <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
       <form action="#" method="POST" className="space-y-2" onSubmit={onSubmit}>

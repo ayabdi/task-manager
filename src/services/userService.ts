@@ -1,4 +1,5 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions'
+import { User } from '@/domain/entities/User'
 import prisma from '@/infrastructure/prisma/client'
 import bcrypt from 'bcrypt'
 import { getServerSession } from 'next-auth/next'
@@ -67,7 +68,7 @@ export const fetchUserRecord = async (userId?: string) => {
     name: user.name,
     email: user.email,
     teamId: user.teamId
-  }
+  } as User
 }
 
 /**
