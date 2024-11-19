@@ -424,7 +424,3 @@ This project demonstrates the ability to build a complex, full-stack application
 - **Comprehensive Testing**: Writing tests with **Jest** and **Cypress** for quality assurance.
 - **CI/CD Pipelines**: Configuring automated testing and deployment pipelines with GitHub Actions.
 - **Code Quality**: Ensuring readability and adherence to best practices.
-
----
-
-Thank you for reviewing this project. Looking forward to hearing back!
