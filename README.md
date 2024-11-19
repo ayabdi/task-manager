@@ -7,7 +7,6 @@ This project is a **real-time, collaborative task management tool** developed us
 ## Project Demonstration
 
 - **Live Demo**: [Deployed Application Link](https://task-manager-production-7107.up.railway.app/)
-- **Video Walkthrough**: [Loom Video](https://www.loom.com/share/33c8ad3d774a489687d4830d4699a171?sid=e25f3bd2-3cd0-4bfe-8886-e09a58341418)
 
 ## Features
 
